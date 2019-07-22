@@ -1,0 +1,14 @@
+<div style="display:flex; flex-direction:column;align-items: center">
+  <b>DATOS VALIDADOS POR RENAPER:</b>
+  <div *ngFor="let item of content | keyvalue">
+    <b>{{ item.key }}</b
+    >: {{ item.value }}
+    <div *ngIf="item.key === 'person'">
+      - Datos de la persona -
+      <div *ngFor="let option of item.value | keyvalue">
+        <b>{{ option.key }}</b
+        >: {{ option.value }}
+      </div>
+    </div>
+  </div>
+</div>

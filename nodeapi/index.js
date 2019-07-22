@@ -31,9 +31,9 @@ app.post('/person', function(request1, serverRes) {
     '","order":"' +
     myBody.order +
     '"}';
-  serverRes.json({ requestBody: data });
+  // serverRes.json({ requestBody: data });
 
-  /*console.log(data);
+  console.log(data);
   const uri = url.parse('https://renaper.dnm.gob.ar');
   const { request } = uri.protocol === 'https:' ? https : http;
 
@@ -68,7 +68,6 @@ app.post('/person', function(request1, serverRes) {
 
   req.write(data);
   req.end();
-  */
 });
 app.get('/face', function(request1, serverRes) {
   serverRes.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
@@ -117,6 +116,6 @@ app.get('/face', function(request1, serverRes) {
   req.end();
 });
 
-app.listen(3000, '192.168.0.108', () => {
+app.listen(3000, '192.168.0.110', () => {
   console.log('El servidor está inicializado en el puerto 3000');
 });
