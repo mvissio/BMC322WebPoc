@@ -16,8 +16,13 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     dbr.licenseKey =
       't0068NQAAACLXANtkbkqiXyqxKLgs4E96lS/m0s/4I3VNy1EhUBcqD84+8iWXS9CbBmmp3+qSxewQfSLBmPTiimqF1MEjhr8=';
-
-    this.scanner = new dbr.Scanner({
+    dbr
+      .createInstance()
+      .then(reader => reader.decode('./TestSmall.jpg'))
+      .then(r => {
+        console.log(r);
+      });
+    /*this.scanner = new dbr.Scanner({
       onFrameRead: results => {
         if (results.length > 0) {
           console.log('results', results);
@@ -36,7 +41,7 @@ export class HomeComponent implements OnInit {
           this.router.navigate(['result']);
         });
       }
-    });
+    });*/
   }
 
   getRenaperPerson(numberTxt, genderTxt, orderTxt) {
