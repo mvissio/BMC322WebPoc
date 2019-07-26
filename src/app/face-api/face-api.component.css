@@ -1,0 +1,36 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.content{
+padding: 0% 25%;
+}
+#canv-content > canvas,
+#canv-content > div,
+#canv-content > video {
+  position: absolute !important;
+}
+#canv-content > div{
+  bottom: 15%;
+}
+.bottom{
+  position: fixed;
+  bottom: 5%;
+}
+.bottom-15{
+  position: fixed;
+  bottom: 13%;
+  max-width: 47%;
+}
+/*#video, canvas{*/
+/*  -moz-transform:scale(1.5);*/
+/*  -webkit-transform:scale(1.5);*/
+/*  -o-transform:scale(1.5);*/
+/*  -ms-transform:scale(1.5);*/
+/*  transform:scale(1.5);*/
+/*}*/
