@@ -20,8 +20,8 @@ export class ResultComponent implements OnInit {
       },
       valid: 'Vigente'
     };
-
-    this.content = JSON.parse(localStorage.getItem('result'));
+    const result = localStorage.getItem('result');
+    this.content = typeof result === 'string' ? result : JSON.parse(result);
     console.log(this.content);
   }
 }

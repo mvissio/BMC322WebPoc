@@ -15,10 +15,11 @@ export class DniComponent implements OnInit {
 
   // toggle webcam on/off
   public showWebcam = true;
-  public allowCameraSwitch = true;
+  public allowCameraSwitch = false;
   public multipleWebcamsAvailable = false;
   public deviceId: string;
   webcamImageF;
+  switched = false;
   constructor(private router: Router) {}
   public videoOptions: MediaTrackConstraints = {
     // width: {ideal: 1024},
@@ -63,7 +64,7 @@ export class DniComponent implements OnInit {
   public handleImage(webcamImage: WebcamImage): void {
     console.info('received webcam image', webcamImage);
     this.webcamImageF = webcamImage;
-    let result = webcamImage.imageAsDataUrl;
+    const result = webcamImage.imageAsDataUrl;
 
     // result = result.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
     localStorage.setItem('imgDni', result);
@@ -74,6 +75,10 @@ export class DniComponent implements OnInit {
   public cameraWasSwitched(deviceId: string): void {
     console.log('active device: ' + deviceId);
     this.deviceId = deviceId;
+    if (!this.switched) {
+      this.switched = true;
+      this.showNextWebcam(false);
+    }
   }
 
   public get triggerObservable(): Observable<void> {

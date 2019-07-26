@@ -23,25 +23,47 @@ export class HomeComponent implements OnInit {
       .then(reader => reader.decode(imgDni))
       .then(r => {
         console.log('result=', r);
-        const rr = r[0];
-        console.log('result0=', r[0]);
+        if (r.length > 0) {
+          const rr = r[0];
+          console.log('result0=', r[0]);
 
-        const strMsg = rr.BarcodeText;
+          const strMsg = rr.BarcodeText;
 
-        console.log('datos=', strMsg);
-        const codigo = strMsg.split('@');
-        const tramite = codigo[10].trim();
-        const dni = codigo[1].trim();
-        const sexo = codigo[8].trim();
-        console.log('datos dni sexo tramite=', dni, sexo, tramite);
-        if (dni && sexo && tramite) {
-          this.getRenaperPerson(dni, sexo, tramite).subscribe(res => {
-            localStorage.setItem('result', JSON.stringify(res));
-            console.log('resultado del servicio:', res);
-            // this.scanner.close();
-            this.router.navigate(['result']);
-          });
+          console.log('datos=', strMsg);
+          const codigo = strMsg.split('@');
+          // length=9 00384052743@CORTEZ LO DUCA@AGOSTINA@F@54692573@A@12/06/2015@06/07/2015@276
+          // length=17  @25984618    @A@1@LO DUCA@NATALIA GEORGINA@ARGENTINA@18/06/1977@F@04/01/2012@00087712904@7013 @04/01/2027@61@0@ILR:2.20 C:110927.01 (GM/EXE-MOVE-HM)@UNIDAD #13 || S/N: 0040>2008>>0010
+
+          if (codigo.length > 0) {
+            console.log('length=' + codigo.length);
+            // dni nuevo
+            let tramite = codigo[0].trim();
+            let dni = codigo[4].trim();
+            let sexo = codigo[3].trim();
+            // dni viejo
+            if (codigo.length > 10) {
+              tramite = codigo[10].trim();
+              dni = codigo[1].trim();
+              sexo = codigo[8].trim();
+            }
+
+            console.log('datos dni sexo tramite=', dni, sexo, tramite);
+            if (dni && sexo && tramite) {
+              this.getRenaperPerson(dni, sexo, tramite).subscribe(res => {
+                localStorage.setItem('result', JSON.stringify(res));
+                console.log('resultado del servicio:', res);
+                // this.scanner.close();
+              });
+            } else {
+              localStorage.setItem('result', 'se lee mal codigo de barra');
+            }
+          } else {
+            localStorage.setItem('result', 'se lee mal codigo de barra');
+          }
+        } else {
+          localStorage.setItem('result', 'no se leyó el código de barra');
         }
+        this.router.navigate(['result']);
       });
 
     // https://www.dynamsoft.com/help/Barcode-Reader-JS/JS/methodreadBase64.html
