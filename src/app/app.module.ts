@@ -9,11 +9,10 @@ import { HomeComponent } from './home/home.component';
 import { OpenComponent } from './open/open.component';
 import { WebcamModule } from 'ngx-webcam';
 
-import { NgOpenCVModule } from 'ng-open-cv';
+import {NgOpenCVModule, OpenCVOptions} from 'ng-open-cv';
 import { DniComponent } from './dni/dni.component';
 
 import { AppRoutingModule } from './app-routing.module';
-import { OpenCVOptions } from 'projects/ng-open-cv/src/public_api';
 import {FaceApiComponent} from './face-api/face-api.component';
 import {FormsModule} from '@angular/forms';
 const appRoutes: Routes = [

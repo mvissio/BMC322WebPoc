@@ -65,7 +65,7 @@ export class DniComponent implements OnInit {
     this.webcamImageF = webcamImage;
     let result = webcamImage.imageAsDataUrl;
 
-    result = result.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
+    // result = result.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
     localStorage.setItem('imgDni', result);
     this.router.navigate(['home']);
     this.pictureTaken.emit(webcamImage);
