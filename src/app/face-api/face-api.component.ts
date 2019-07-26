@@ -12,6 +12,10 @@ export class FaceApiComponent implements OnInit {
   video: any;
   stepSelect: any = {};
   steps = {
+    INIT: {
+      state: 'init',
+      message: 'Espere unos segundos, por favor'
+    },
     SERIUS: {
       state: 'serius',
       message: 'Mantenga la seriedad, por favor'
@@ -39,7 +43,7 @@ export class FaceApiComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.stepSelect = this.steps.SERIUS;
+    this.stepSelect = this.steps.INIT;
     this.initVideo();
   }
 
@@ -66,8 +70,11 @@ export class FaceApiComponent implements OnInit {
           faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
           faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
         }
-        this.moreExpresion(resizedDetections);
-        // console.log(resizedDetections.landmarks.getLeftEye());
+        if (this.stepSelect.state === this.steps.INIT.state) {
+          this.stepSelect = this.steps.SERIUS;
+        } else {
+          this.moreExpresion(resizedDetections);
+        }
       }, 2000);
     });
   }
