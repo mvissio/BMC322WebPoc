@@ -71,7 +71,7 @@ export class FaceApiComponent implements OnInit {
           faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
         }
         if (this.stepSelect.state === this.steps.INIT.state) {
-          this.stepSelect = this.steps.SERIUS;
+          this.stepSelect = this.steps.HAPPY;
         } else {
           this.moreExpresion(resizedDetections);
         }
@@ -106,10 +106,10 @@ export class FaceApiComponent implements OnInit {
 
   nextStep() {
     switch (this.stepSelect.state) {
-      case this.steps.SERIUS.state:
-        this.stepSelect = this.steps.HAPPY;
-        break;
       case this.steps.HAPPY.state:
+        this.stepSelect = this.steps.SERIUS;
+        break;
+      case this.steps.SERIUS.state:
         this.stepSelect = this.steps.ANGRY;
         break;
       case this.steps.ANGRY.state:
