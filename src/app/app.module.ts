@@ -1,22 +1,25 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
-import {AppComponent} from './app.component';
-import {HttpClientModule} from '@angular/common/http';
-import {ResultComponent} from './result/result.component';
-import {RouterModule, Routes} from '@angular/router';
-import {HomeComponent} from './home/home.component';
-import {OpenComponent} from './open/open.component';
+import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ResultComponent } from './result/result.component';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { OpenComponent } from './open/open.component';
+import { WebcamModule } from 'ngx-webcam';
 
-import {NgOpenCVModule, OpenCVOptions} from 'ng-open-cv';
+import { NgOpenCVModule } from 'ng-open-cv';
+import { DniComponent } from './dni/dni.component';
 
-// import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
+import { OpenCVOptions } from 'projects/ng-open-cv/src/public_api';
 import {FaceApiComponent} from './face-api/face-api.component';
 import {FormsModule} from '@angular/forms';
-
 const appRoutes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'open', component: OpenComponent},
+  { path: 'dni', component: DniComponent },
   {path: 'result', component: ResultComponent},
   {path: 'faceapi', component: FaceApiComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'},
@@ -27,18 +30,18 @@ const openCVConfig: OpenCVOptions = {
   wasmBinaryFile: 'wasm/opencv_js.wasm',
   usingWasm: true
 };
-
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ResultComponent, OpenComponent, FaceApiComponent],
+  declarations: [AppComponent, HomeComponent, ResultComponent, OpenComponent, FaceApiComponent,     DniComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     NgOpenCVModule.forRoot(openCVConfig),
-    FormsModule
+    FormsModule,
+    WebcamModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule {}
