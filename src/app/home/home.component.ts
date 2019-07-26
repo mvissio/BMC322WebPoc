@@ -79,13 +79,18 @@ export class HomeComponent implements OnInit {
       BODY
     );
   }
-  getRenaperFace() {
+  getRenaperFace(numberTxt, genderTxt, orderTxt, imgTxt) {
     const BODY = {
-      number: '25984618',
-      gender: 'F',
-      order: '00087712904'
+      number: numberTxt,
+      gender: genderTxt,
+      order: orderTxt,
+      img: imgTxt
     };
-    return this.http.get(`https://desolate-fortress-69862.herokuapp.com/face`);
+    console.log('body:', BODY);
+    return this.http.post(
+      `https://desolate-fortress-69862.herokuapp.com/face`,
+      BODY
+    );
   }
   openScanner() {
     this.scanner.open();
