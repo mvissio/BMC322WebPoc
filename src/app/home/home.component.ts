@@ -14,13 +14,47 @@ export class HomeComponent implements OnInit {
 
   constructor(private http: HttpClient, private router: Router) {}
   scanner: any;
+
   ngOnInit() {
     const imgDni = localStorage.getItem('imgDni'); // imagen64
+    const imgDniDorso = localStorage.getItem('imgDniDorso');
     dbr.licenseKey =
       't0068NQAAACLXANtkbkqiXyqxKLgs4E96lS/m0s/4I3VNy1EhUBcqD84+8iWXS9CbBmmp3+qSxewQfSLBmPTiimqF1MEjhr8=';
+
+    let codeReaded = this.getReadCodeBar(imgDni);
+    if (!codeReaded) {
+      codeReaded = this.getReadCodeBar(imgDniDorso);
+    }
+    if (!codeReaded) {
+      localStorage.setItem('result', 'no se leyó el código de barra');
+    }
+    this.router.navigate(['result']);
+    // https://www.dynamsoft.com/help/Barcode-Reader-JS/JS/methodreadBase64.html
+    /*this.scanner = new dbr.Scanner({
+      onFrameRead: results => {
+        if (results.length > 0) {
+          console.log('results', results);
+        }
+      }, // eslint-disable-line
+      onNewCodeRead: (txt, result) => {
+        const codigo = txt.split('@');
+        const tramite = codigo[10].trim();
+        const dni = codigo[1].trim();
+        const sexo = codigo[8].trim();
+
+        this.getRenaperPerson(dni, sexo, tramite).subscribe(res => {
+          localStorage.setItem('result', JSON.stringify(res));
+          console.log('resultado del servicio:', res);
+          this.scanner.close();
+          this.router.navigate(['result']);
+        });
+      }
+    });*/
+  }
+  getReadCodeBar(imgToRead) {
     dbr
       .createInstance()
-      .then(reader => reader.decode(imgDni))
+      .then(reader => reader.decode(imgToRead))
       .then(r => {
         console.log('result=', r);
         if (r.length > 0) {
@@ -54,41 +88,14 @@ export class HomeComponent implements OnInit {
                 console.log('resultado del servicio:', res);
                 // this.scanner.close();
               });
-            } else {
-              localStorage.setItem('result', 'se lee mal codigo de barra');
+              return true;
             }
-          } else {
-            localStorage.setItem('result', 'se lee mal codigo de barra');
           }
-        } else {
-          localStorage.setItem('result', 'no se leyó el código de barra');
         }
-        this.router.navigate(['result']);
+        return false;
       });
-
-    // https://www.dynamsoft.com/help/Barcode-Reader-JS/JS/methodreadBase64.html
-    /*this.scanner = new dbr.Scanner({
-      onFrameRead: results => {
-        if (results.length > 0) {
-          console.log('results', results);
-        }
-      }, // eslint-disable-line
-      onNewCodeRead: (txt, result) => {
-        const codigo = txt.split('@');
-        const tramite = codigo[10].trim();
-        const dni = codigo[1].trim();
-        const sexo = codigo[8].trim();
-
-        this.getRenaperPerson(dni, sexo, tramite).subscribe(res => {
-          localStorage.setItem('result', JSON.stringify(res));
-          console.log('resultado del servicio:', res);
-          this.scanner.close();
-          this.router.navigate(['result']);
-        });
-      }
-    });*/
+    return false;
   }
-
   getRenaperPerson(numberTxt, genderTxt, orderTxt) {
     const BODY = {
       number: numberTxt,

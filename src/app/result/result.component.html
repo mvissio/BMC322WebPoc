@@ -1,6 +1,6 @@
 <div style="display:flex; flex-direction:column;align-items: center">
   <b>DATOS VALIDADOS POR RENAPER</b>
-  <div *ngIf="content.length > 0; else templateName">
+  <div *ngIf="!typeOfString; else templateName">
     <div *ngFor="let item of content | keyvalue">
       <b>{{ item.key }}</b
       >: {{ item.value }}
@@ -16,5 +16,11 @@
 
   <ng-template #templateName>
     {{ content }}
+    <input
+      type="button"
+      class="button"
+      value="Vuelva a intentar"
+      (click)="goDni()"
+    />
   </ng-template>
 </div>

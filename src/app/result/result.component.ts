@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-result',
@@ -7,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ResultComponent implements OnInit {
   content: any;
-  constructor() {}
+  typeOfString: boolean;
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.content = {
@@ -21,7 +23,11 @@ export class ResultComponent implements OnInit {
       valid: 'Vigente'
     };
     const result = localStorage.getItem('result');
-    this.content = typeof result === 'string' ? result : JSON.parse(result);
-    console.log(this.content);
+
+    this.content = this.typeOfString ? result : JSON.parse(result);
+    this.typeOfString = typeof this.content === 'string';
+  }
+  goDni() {
+    this.router.navigate(['dni']);
   }
 }

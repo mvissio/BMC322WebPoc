@@ -1,5 +1,10 @@
-<div style="text-align:center">
-  <div>
+<div id="content-wrapper">
+  <div id="capture-screen">
+    <div id="back1"></div>
+    <div id="focus-area">Área de enfoque</div>
+    <div id="pic-ok" *ngIf="picOk">
+      ¡La foto se tomó de<br />forma correcta!
+    </div>
     <webcam
       [height]="500"
       [width]="500"
@@ -12,13 +17,35 @@
       (cameraSwitched)="cameraWasSwitched($event)"
       (initError)="handleInitError($event)"
     ></webcam>
-    <br />
-    <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
-      📸
-    </div>
     <!--<div class="actionBtn" (click)="showNextWebcam(true)" title="Switch Camera">
       🔁
     </div>-->
+    <div id="legend1" *ngIf="legend1" class="legend">
+      Ubicá el FRENTE de tu DNI<br />en el recuadro
+      <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
+        📸
+      </div>
+    </div>
+    <div id="legend2" *ngIf="!legend1" class="legend">
+      Ubicá el DORSO de tu DNI<br />en el recuadro
+      <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
+        📸
+      </div>
+    </div>
+  </div>
+  <div id="result-screen">
+    <div id="back2"></div>
+    <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
+      <img [src]="webcamImageF.imageAsDataUrl" />
+      <div id="checked"></div>
+    </div>
+    <div class="lower-panel">
+      <div class="title">¡Listo!</div>
+      <div class="subtitle">
+        Ahora continuaremos con el<br /><span id="bold">dorso</span> de tu DNI.
+      </div>
+      <input type="button" class="button" value="CONTINUAR" />
+    </div>
   </div>
 </div>
 
@@ -26,7 +53,3 @@
 <ul *ngFor="let error of errors">
   <li>{{ error | json }}</li>
 </ul>
-<div class="snapshot" *ngIf="webcamImageF">
-  <h2>Nice one!</h2>
-  <img [src]="webcamImageF.imageAsDataUrl" />
-</div>

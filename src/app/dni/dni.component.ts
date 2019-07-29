@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-dni',
   templateUrl: './dni.component.html',
-  styleUrls: ['./dni.component.css']
+  styleUrls: ['./dni.component.scss']
 })
 export class DniComponent implements OnInit {
   @Output()
@@ -20,6 +20,7 @@ export class DniComponent implements OnInit {
   public deviceId: string;
   webcamImageF;
   switched = false;
+  legend1 = true;
   constructor(private router: Router) {}
   public videoOptions: MediaTrackConstraints = {
     // width: {ideal: 1024},
@@ -67,8 +68,13 @@ export class DniComponent implements OnInit {
     const result = webcamImage.imageAsDataUrl;
 
     // result = result.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
-    localStorage.setItem('imgDni', result);
-    this.router.navigate(['home']);
+    if (this.legend1) {
+      localStorage.setItem('imgDni', result);
+      this.legend1 = false;
+    } else {
+      localStorage.setItem('imgDniDorso', result);
+      this.router.navigate(['home']);
+    }
     this.pictureTaken.emit(webcamImage);
   }
 
