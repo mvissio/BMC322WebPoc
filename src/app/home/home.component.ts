@@ -108,11 +108,10 @@ export class HomeComponent implements OnInit {
       BODY
     );
   }
-  getRenaperFace(numberTxt, genderTxt, orderTxt, imgTxt) {
+  getRenaperFace(numberTxt, genderTxt, imgTxt) {
     const BODY = {
       number: numberTxt,
       gender: genderTxt,
-      order: orderTxt,
       img: imgTxt
     };
     console.log('body:', BODY);
