@@ -24,8 +24,8 @@ export class ResultComponent implements OnInit {
     };
     const result = localStorage.getItem('result');
 
+    this.typeOfString = typeof result === 'string';
     this.content = this.typeOfString ? result : JSON.parse(result);
-    this.typeOfString = typeof this.content === 'string';
   }
   goDni() {
     this.router.navigate(['dni']);

@@ -57,18 +57,6 @@ export class HomeComponent implements OnInit {
       .createInstance()
       .then(reader => reader.decode(imgToRead))
       .then(r => {
-        const myImg = imgToRead;
-        const BODY = {
-          files: { img: { data: myImg } }
-        };
-        console.log('body:', BODY);
-
-        const resultadoFace = this.http.post(
-          `https://desolate-fortress-69862.herokuapp.com/detectDocument`,
-          BODY
-        );
-        console.log('es documento?=', resultadoFace);
-
         console.log('result=', r);
         // si encontró un código de barra
         if (r.length > 0) {

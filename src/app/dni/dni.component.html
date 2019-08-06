@@ -32,19 +32,30 @@
         📸
       </div>
     </div>
-  </div>
-  <div id="result-screen">
-    <div id="back2"></div>
-    <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
-      <img [src]="webcamImageF.imageAsDataUrl" />
-      <div id="checked"></div>
-    </div>
-    <div class="lower-panel">
-      <div class="title">¡Listo!</div>
-      <div class="subtitle">
-        Ahora continuaremos con el<br /><span id="bold">dorso</span> de tu DNI.
+
+    <div id="result-screen" *ngIf="webcamImageF">
+      <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
+        <img [src]="webcamImageF.imageAsDataUrl" />
       </div>
-      <input type="button" class="button" value="CONTINUAR" />
+      <div class="lower-panel">
+        <div id="checked"></div>
+        <div class="title">¡Listo!</div>
+        <div class="subtitle">
+          Ahora continuaremos con el<br /><span id="bold">dorso</span> de tu
+          DNI.
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:row;align-items: center">
+        <div id="back2"></div>
+        <button
+          class="button"
+          type="button"
+          value="CONTINUAR"
+          (click)="goToNext($event)"
+        >
+          CONTINUAR
+        </button>
+      </div>
     </div>
   </div>
 </div>
