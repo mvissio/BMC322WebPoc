@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {Observable, timer} from 'rxjs';
+import {Router} from '@angular/router';
 
 declare const faceapi: any;
 export const URI = '../../assets/models';
@@ -39,7 +41,7 @@ export class FaceApiComponent implements OnInit {
   };
   showDraw = false;
 
-  constructor() {
+  constructor(private router: Router) {
   }
 
   ngOnInit() {
@@ -62,7 +64,8 @@ export class FaceApiComponent implements OnInit {
       const displaySize = {width: this.video.width, height: this.video.height};
       faceapi.matchDimensions(canvas, displaySize);
       setInterval(async () => {
-        const detections = await faceapi.detectSingleFace(this.video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
+        const detections = await
+          faceapi.detectSingleFace(this.video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions();
         const resizedDetections = faceapi.resizeResults(detections, displaySize);
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
         if (this.showDraw) {
@@ -75,7 +78,7 @@ export class FaceApiComponent implements OnInit {
         } else {
           this.moreExpresion(resizedDetections);
         }
-      }, 2000);
+      }, 500);
     });
   }
 
@@ -117,6 +120,7 @@ export class FaceApiComponent implements OnInit {
         break;
       case this.steps.SURPRISED.state:
         this.stepSelect = this.steps.FINISH;
+        timer(3000).toPromise().then(() => this.router.navigate(['/selfie']));
         break;
 
     }
@@ -129,4 +133,5 @@ export class FaceApiComponent implements OnInit {
       err => console.error(err)
     );
   }
+
 }

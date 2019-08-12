@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ResultComponent } from '../result/result.component';
+import { CommonsService } from '../../services/commons.service';
 
 const dbr = (window as any).dbr;
 @Component({
@@ -11,9 +12,9 @@ const dbr = (window as any).dbr;
 })
 export class HomeComponent implements OnInit {
   title = 'dbr-cdn-angular-default';
-
-  constructor(private http: HttpClient, private router: Router) {}
   scanner: any;
+
+  constructor(private router: Router, private commonsService: CommonsService) {}
 
   ngOnInit() {
     const imgDni = localStorage.getItem('imgDni'); // imagen64
@@ -85,11 +86,13 @@ export class HomeComponent implements OnInit {
 
             console.log('datos dni sexo tramite=', dni, sexo, tramite);
             if (dni && sexo && tramite) {
-              this.getRenaperPerson(dni, sexo, tramite).subscribe(res => {
-                localStorage.setItem('result', JSON.stringify(res));
-                console.log('resultado del servicio:', res);
-                // this.scanner.close();
-              });
+              this.commonsService
+                .getRenaperPerson(dni, sexo, tramite)
+                .subscribe(res => {
+                  localStorage.setItem('result', JSON.stringify(res));
+                  console.log('resultado del servicio:', res);
+                  // this.scanner.close();
+                });
               return true;
             }
           }
@@ -97,30 +100,6 @@ export class HomeComponent implements OnInit {
         return false;
       });
     return false;
-  }
-  getRenaperPerson(numberTxt, genderTxt, orderTxt) {
-    const BODY = {
-      number: numberTxt,
-      gender: genderTxt,
-      order: orderTxt
-    };
-    console.log('body:', BODY);
-    return this.http.post(
-      `https://desolate-fortress-69862.herokuapp.com/person`,
-      BODY
-    );
-  }
-  getRenaperFace(numberTxt, genderTxt, imgTxt) {
-    const BODY = {
-      number: numberTxt,
-      gender: genderTxt,
-      img: imgTxt
-    };
-    console.log('body:', BODY);
-    return this.http.post(
-      `https://desolate-fortress-69862.herokuapp.com/face`,
-      BODY
-    );
   }
   openScanner() {
     this.scanner.open();
