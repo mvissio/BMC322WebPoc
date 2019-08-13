@@ -60,11 +60,14 @@ export class SelfieComponent implements OnInit {
     const dni = localStorage.getItem('number');
     const gender = localStorage.getItem('gender');
     if (dni && selfie && gender) {
-      /*this.commonsService.getRenaperFace(dni, gender, selfie).subscribe(res => {
+      /*
+      TODO: para cuando ande todo
+      this.commonsService.getRenaperFace(dni, gender, selfie).subscribe(res => {
         localStorage.setItem('resultFace', JSON.stringify(res));
         console.log('resultado del servicio FACE:', res);
         this.router.navigate(['result']);
       });*/
+      console.log('mockeamos llamada a renaper para cara');
       localStorage.setItem(
         'resultFace',
         JSON.stringify({
