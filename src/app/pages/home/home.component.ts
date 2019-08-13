@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
         const sexo = codigo[8].trim();
 
         this.getRenaperPerson(dni, sexo, tramite).subscribe(res => {
-          localStorage.setItem('result', JSON.stringify(res));
+          localStorage.setItem('resultDNI', JSON.stringify(res));
           console.log('resultado del servicio:', res);
           this.scanner.close();
           this.router.navigate(['result']);

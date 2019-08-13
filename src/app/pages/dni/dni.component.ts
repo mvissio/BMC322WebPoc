@@ -32,7 +32,6 @@ export class DniComponent implements OnInit {
   webcamImageFView = false;
   switched = false;
   legend1 = true;
-  imageType: string = 'image/jpeg';
   public width: any;
   public heith: any;
   imgDNI: string;
@@ -51,6 +50,7 @@ export class DniComponent implements OnInit {
   public ngOnInit(): void {
     this.width = window.innerWidth;
     this.heith = window.innerHeight;
+    localStorage.clear();
   }
 
   public triggerSnapshot(): void {
@@ -123,7 +123,7 @@ export class DniComponent implements OnInit {
     }
 
     if (!this.codeReaded) {
-      localStorage.setItem('result', 'no se leyó el código de barra');
+      localStorage.setItem('resultDNI', 'no se leyó el código de barra');
     }
 
     this.router.navigate(['result']);
@@ -163,12 +163,14 @@ export class DniComponent implements OnInit {
             }
 
             console.log('datos dni sexo tramite=', dni, sexo, tramite);
+            localStorage.setItem('number', dni);
+            localStorage.setItem('gender', sexo);
             if (dni && sexo && tramite) {
               this.commonsService
                 .getRenaperPerson(dni, sexo, tramite)
                 .subscribe(res => {
-                  localStorage.setItem('result', JSON.stringify(res));
-                  console.log('resultado del servicio:', res);
+                  localStorage.setItem('resultDNI', JSON.stringify(res));
+                  console.log('resultado del servicio DNI:', res);
                   return true;
                   // this.scanner.close();
                 });
