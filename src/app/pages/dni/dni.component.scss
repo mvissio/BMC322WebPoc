@@ -1,231 +1,232 @@
 @import '../../../assets/fonts/fonts.css';
 .actionBtn {
-    font-size: 3em;
-    cursor: pointer;
-    padding-left: 5rem;
-    transform: rotate(90deg);
+  font-size: 3em;
+  cursor: pointer;
+  padding-left: 10rem;
+  margin-bottom: 2rem;
+  transform: rotate(90deg);
 }
 
 .snapshot {
-    text-align: center;
-    img {
-        max-width: 800px;
-        max-height: 800px;
-    }
+  text-align: center;
+  img {
+    max-width: 800px;
+    max-height: 800px;
+  }
 }
 
 ul.links {
-    padding-bottom: 20px;
+  padding-bottom: 20px;
 }
 
 #content-wrapper {
-    background-color: #ffffff;
-    height: 100%;
+  background-color: #ffffff;
+  height: 100%;
+  overflow: hidden;
+  #start-screen {
+    background: url('/assets/img/ident-bg.jpg') no-repeat;
+    background-size: cover;
+    color: #ffffff;
+    max-height: 100vh;
     overflow: hidden;
-    #start-screen {
-        background: url('/assets/img/ident-bg.jpg') no-repeat;
-        background-size: cover;
-        color: #ffffff;
-        max-height: 100vh;
-        overflow: hidden;
-        position: absolute;
-        width: 100%;
-        z-index: 4;
-        &.pad-25 {
-            padding: 25% 0;
-        }
-        .title {
-            border-bottom: 1px solid #707070;
-            font-family: 'Roboto', sans-serif;
-            font-size: 24px;
-            font-weight: 400;
-            padding-bottom: 19px;
-        }
-        .subtitle {
-            font-family: 'Open Sans', sans-serif;
-            font-size: 17px;
-            font-weight: 400;
-            padding: 25px 0;
-        }
+    position: absolute;
+    width: 100%;
+    z-index: 4;
+    &.pad-25 {
+      padding: 25% 0;
     }
-    #capture-screen {
-        background-color: #ffffff;
-        /*height: 100%;
+    .title {
+      border-bottom: 1px solid #707070;
+      font-family: 'Roboto', sans-serif;
+      font-size: 24px;
+      font-weight: 400;
+      padding-bottom: 19px;
+    }
+    .subtitle {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      padding: 25px 0;
+    }
+  }
+  #capture-screen {
+    background-color: #ffffff;
+    /*height: 100%;
     overflow: hidden;
     position: absolute;*/
-        width: 100%;
-        z-index: 2;
-        /*display: flex;
+    width: 100%;
+    z-index: 2;
+    /*display: flex;
     flex-direction: column;*/
-        #focus-area {
-            background: url('/assets/img/IDIconFront.png') no-repeat;
-            background-position: 0 0;
-            background-size: 25px 30px;
-            bottom: 0;
-            color: #ffffff;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 17px;
-            font-weight: 400;
-            height: 176px;
-            left: 0;
-            margin: auto;
-            margin-top: 5rem;
-            padding-top: 35px;
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 25px;
-            writing-mode: vertical-rl;
-            z-index: 2;
-        }
-        #pic-ok {
-            background: url('/assets/img/checkIcon.png') no-repeat;
-            background-position: 0 0;
-            background-size: 40px 40px;
-            bottom: 0;
-            box-sizing: content-box;
-            color: #ffffff;
-            display: none;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 17px;
-            font-weight: 400;
-            height: 160px;
-            left: 0;
-            margin: auto;
-            padding-top: 42px;
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 40px;
-            writing-mode: vertical-rl;
-            z-index: 2;
-        }
-        webcam {
-            width: 100%;
-            height: 100%;
-        }
-        .legend {
-            background: url('/assets/img/IDIconSMFront-azul.png') no-repeat;
-            background-color: #ffffff;
-            background-position: 20px 19px;
-            background-size: 25px 31px;
-            border-radius: 6px;
-            bottom: 0;
-            box-sizing: content-box;
-            color: #01a0da;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 13px;
-            font-weight: 500;
-            height: 11rem;
-            left: 4%;
-            margin: auto;
-            margin-top: 5rem;
-            padding: 63px 11px 35px 13px;
-            position: absolute;
-            top: 0;
-            width: 36px;
-            writing-mode: vertical-rl;
-        }
-        #back1 {
-            background: url('/assets/img/cross-light.png') no-repeat;
-            background-size: cover;
-            height: 19px;
-            position: absolute;
-            right: 19px;
-            top: 19px;
-            width: 19px;
-            z-index: 4;
-        }
+    #focus-area {
+      background: url('/assets/img/IDIconFront.png') no-repeat;
+      background-position: 0 0;
+      background-size: 25px 30px;
+      bottom: 0;
+      color: #ffffff;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      height: 176px;
+      left: 0;
+      margin: auto;
+      margin-top: 5rem;
+      padding-top: 35px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 25px;
+      writing-mode: vertical-rl;
+      z-index: 2;
     }
-    #result-screen {
-        background-color: #ffffff;
-        /*height: 100%;
+    #pic-ok {
+      background: url('/assets/img/checkIcon.png') no-repeat;
+      background-position: 0 0;
+      background-size: 40px 40px;
+      bottom: 0;
+      box-sizing: content-box;
+      color: #ffffff;
+      display: none;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      height: 160px;
+      left: 0;
+      margin: auto;
+      padding-top: 42px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 40px;
+      writing-mode: vertical-rl;
+      z-index: 2;
+    }
+    webcam {
+      width: 100%;
+      height: 100%;
+    }
+    .legend {
+      background: url('/assets/img/IDIconSMFront-azul.png') no-repeat;
+      background-color: #ffffff;
+      background-position: 20px 19px;
+      background-size: 25px 31px;
+      border-radius: 6px;
+      bottom: 0;
+      box-sizing: content-box;
+      color: #01a0da;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      height: 11rem;
+      left: 4%;
+      margin: auto;
+      margin-top: 2rem;
+      padding: 63px 11px 35px 13px;
+      position: absolute;
+      top: 0;
+      width: 36px;
+      writing-mode: vertical-rl;
+    }
+    #back1 {
+      background: url('/assets/img/cross-light.png') no-repeat;
+      background-size: cover;
+      height: 19px;
+      position: absolute;
+      right: 19px;
+      top: 19px;
+      width: 19px;
+      z-index: 4;
+    }
+  }
+  #result-screen {
+    background-color: #ffffff;
+    /*height: 100%;
     overflow: hidden;
     position: absolute;
     width: 100%;
     */
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-        #result-image-wrapper {
-            margin-top: 10%;
-            /*position: relative;*/
-            #resultImage {
-                display: block;
-                height: 30%;
-                margin: 0 auto;
-                width: 83%;
-            }
-        }
-        .title {
-            color: white;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 22px;
-            font-weight: 500;
-        }
-        .subtitle {
-            color: white;
-            font-family: 'Open Sans', sans-serif;
-            font-size: 17px;
-            font-weight: 400;
-            padding: 9px 0 60px;
-            #bold {
-                font-weight: 500;
-            }
-        }
-        #temp2 {
-            display: none;
-        }
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    #result-image-wrapper {
+      margin-top: 10%;
+      /*position: relative;*/
+      #resultImage {
+        display: block;
+        height: 30%;
+        margin: 0 auto;
+        width: 83%;
+      }
     }
-    .lower-panel {
-        padding-bottom: 33px;
-        position: absolute;
-        text-align: center;
-        width: 100%;
-        #checked {
-            background: url('/assets/img-new/icon-check.png') no-repeat center bottom;
-            box-sizing: content-box;
-            height: 100%;
-            padding-bottom: 10rem;
-            /*overflow: hidden;
+    .title {
+      color: white;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 22px;
+      font-weight: 500;
+    }
+    .subtitle {
+      color: white;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      padding: 9px 0 60px;
+      #bold {
+        font-weight: 500;
+      }
+    }
+    #temp2 {
+      display: none;
+    }
+  }
+  .lower-panel {
+    padding-bottom: 33px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    #checked {
+      background: url('/assets/img-new/icon-check.png') no-repeat center bottom;
+      box-sizing: content-box;
+      height: 100%;
+      padding-bottom: 10rem;
+      /*overflow: hidden;
       position: absolute;*/
-            top: 0;
-            width: 100%;
-            z-index: 2;
-        }
+      top: 0;
+      width: 100%;
+      z-index: 2;
     }
-    .button {
-        background-color: #ff9204;
-        border: 2px solid #ff9204;
-        border-radius: 999px;
-        color: #ffffff;
-        font-family: 'Roboto', sans-serif;
-        font-size: 15px;
-        font-weight: 700;
-        max-width: 320px;
-        width: 90%;
-        padding: 12px 0;
-        cursor: pointer;
-    }
+  }
+  .button {
+    background-color: #ff9204;
+    border: 2px solid #ff9204;
+    border-radius: 999px;
+    color: #ffffff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    max-width: 320px;
+    width: 90%;
+    padding: 12px 0;
+    cursor: pointer;
+  }
 }
 
 video {
-    transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .button-content {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    z-index: 1000;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  z-index: 1000;
 }
 
 #back2 {
-    background: url('/assets/img/arrow.png') no-repeat;
-    background-size: cover;
-    height: 19px;
-    left: 19px;
-    position: absolute;
-    top: 19px;
-    width: 19px;
+  background: url('/assets/img/arrow.png') no-repeat;
+  background-size: cover;
+  height: 19px;
+  left: 19px;
+  position: absolute;
+  top: 19px;
+  width: 19px;
 }

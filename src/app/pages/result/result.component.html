@@ -3,7 +3,7 @@
   <div *ngIf="!typeOfString; else templateName">
     <div *ngFor="let item of content | keyvalue">
       <b>{{ item.key }}</b
-      >: {{ item.value |json }}
+      >: {{ item.value | json }}
       <div *ngIf="item.key === 'person'">
         - Datos de la persona -
         <div *ngFor="let option of item.value | keyvalue">

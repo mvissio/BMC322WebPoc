@@ -1,38 +1,56 @@
 <div id="content-wrapper">
-    <div id="capture-screen" *ngIf="!webcamImageFView">
-        <webcam [height]="width" [width]="heith" class="fa-rotate-90" [imageType]="imageType" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam" (initError)="handleInitError($event)"></webcam>
-        <div id="legend1" *ngIf="legend1" class="legend">
-            Ubicá el FRENTE de tu DNI
-            <br /> en el recuadro
-            <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
-                📸
-            </div>
-        </div>
-        <div id="legend2" *ngIf="!legend1" class="legend">
-            Ubicá el DORSO de tu DNI<br />en el recuadro
-            <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
-                📸
-            </div>
-        </div>
+  <div id="capture-screen">
+    <webcam
+      [height]="width"
+      [width]="heith"
+      class="fa-rotate-90"
+      [imageType]="imageType"
+      [trigger]="triggerObservable"
+      (imageCapture)="handleImage($event)"
+      *ngIf="showWebcam"
+      (initError)="handleInitError($event)"
+    ></webcam>
+    <div id="legend1" *ngIf="legend1" class="legend">
+      Ubicá el FRENTE de tu DNI
+      <br />
+      en el recuadro
+      <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
+        📸
+      </div>
     </div>
-    <div id="message" *ngIf="webcamImageFView">
-        <div id="result-screen">
-            <div id="back2"></div>
-            <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
-                <img [width]="width" [src]="webcamImageF.imageAsDataUrl" />
-            </div>
-            <div class="lower-panel">
-                <div id="checked"></div>
-                <div class="title">¡Listo!</div>
-                <div class="subtitle">
-                    Ahora continuaremos con el<br /><span id="bold">dorso</span> de tu DNI.
-                </div>
-            </div>
-            <div class="button-content">
-                <button class="button" type="button" value="CONTINUAR" (click)="goToNext($event)">
+    <div id="legend2" *ngIf="!legend1" class="legend">
+      Ubicá el DORSO de tu DNI<br />en el recuadro
+      <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
+        📸
+      </div>
+    </div>
+  </div>
+  <div id="message" *ngIf="webcamImageFView">
+    <div id="result-screen">
+      <div id="back2"></div>
+      <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
+        <img [width]="width" [src]="webcamImageF.imageAsDataUrl" />
+      </div>
+      <div class="lower-panel">
+        <div id="checked"></div>
+        <div class="title">¡Listo!</div>
+        <div class="subtitle" *ngIf="!imgDNIDorso">
+          Ahora continuaremos con el<br /><span id="bold">{{
+            !legend1 ? 'dorso' : ''
+          }}</span>
+          de tu DNI.
+        </div>
+      </div>
+      <div class="button-content" *ngIf="imgDNIDorso">
+        <button
+          class="button"
+          type="button"
+          value="CONTINUAR"
+          (click)="goToNext($event)"
+        >
           CONTINUAR
         </button>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
 </div>
