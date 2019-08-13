@@ -50,7 +50,7 @@ export class DniComponent implements OnInit {
   public ngOnInit(): void {
     this.width = window.innerWidth;
     this.heith = window.innerHeight;
-    localStorage.clear();
+    // localStorage.clear();
   }
 
   public triggerSnapshot(): void {

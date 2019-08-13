@@ -38,8 +38,8 @@
   style="display:flex; flex-direction:column;align-items: center"
 >
   <b>DATOS CARA VALIDADOS POR RENAPER</b>
-  <div *ngIf="!typeOfString; else templateNameFace">
-    <div *ngFor="let item of content | keyvalue">
+  <div *ngIf="!typeOfStringFace; else templateNameFace">
+    <div *ngFor="let item of contentFace | keyvalue">
       <b>{{ item.key }}</b
       >: {{ item.value | json }}
       <div *ngIf="item.key === 'person'">

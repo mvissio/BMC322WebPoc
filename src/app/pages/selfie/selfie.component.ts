@@ -60,11 +60,22 @@ export class SelfieComponent implements OnInit {
     const dni = localStorage.getItem('number');
     const gender = localStorage.getItem('gender');
     if (dni && selfie && gender) {
-      this.commonsService.getRenaperFace(dni, gender, selfie).subscribe(res => {
+      /*this.commonsService.getRenaperFace(dni, gender, selfie).subscribe(res => {
         localStorage.setItem('resultFace', JSON.stringify(res));
         console.log('resultado del servicio FACE:', res);
         this.router.navigate(['result']);
-      });
+      });*/
+      localStorage.setItem(
+        'resultFace',
+        JSON.stringify({
+          code: 2003,
+          message: 'Face compare success',
+          confidence: 0,
+          matchThreshold: false,
+          faceAuthenticationId: 2698723
+        })
+      );
+      this.router.navigate(['result']);
     } else {
       console.log('No existen los datos de Cara para validar contra renaper');
       localStorage.setItem(

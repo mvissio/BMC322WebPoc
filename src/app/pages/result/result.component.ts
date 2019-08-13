@@ -24,15 +24,17 @@ export class ResultComponent implements OnInit {
       },
       valid: 'Vigente'
     };
-    let result = localStorage.getItem('resultDNI');
+    const result = localStorage.getItem('resultDNI');
 
     this.typeOfString = typeof result === 'string';
     this.content = this.typeOfString ? result : JSON.parse(result);
 
-    result = localStorage.getItem('resultFace');
+    const resultFace = localStorage.getItem('resultFace');
     if (result) {
-      this.typeOfStringFace = typeof result === 'string';
-      this.contentFace = this.typeOfStringFace ? result : JSON.parse(result);
+      this.typeOfStringFace = typeof resultFace === 'string';
+      this.contentFace = this.typeOfStringFace
+        ? resultFace
+        : JSON.parse(resultFace);
     }
   }
   goDni() {
