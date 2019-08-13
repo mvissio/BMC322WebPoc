@@ -1,15 +1,10 @@
-<webcam
-  [height]="500"
-  [width]="500"
-  [trigger]="triggerObservable"
-  (imageCapture)="handleImage($event)"
-  *ngIf="showWebcam"
-  [allowCameraSwitch]="allowCameraSwitch"
-  [switchCamera]="nextWebcamObservable"
-  [videoOptions]="videoOptions"
-  (cameraSwitched)="cameraWasSwitched($event)"
-  (initError)="handleInitError($event)"
-></webcam>
-<div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
-  📸
+<div class="content">
+  <webcam [height]="width" [width]="heith" class="fa-rotate-90" [imageType]="imageType" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam" (initError)="handleInitError($event)"></webcam>
+
+  <div class="input-group mb-3 bottom-15 text-cente alert alert-primary">
+    <div>Realizaremos una selfie para terminar</div>
+  </div>
+  <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
+    📸
+  </div>
 </div>
