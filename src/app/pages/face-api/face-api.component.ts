@@ -13,6 +13,8 @@ export const URI = '../../assets/models';
 export class FaceApiComponent implements OnInit {
   video: any;
   stepSelect: any = {};
+  width;
+  heigth;
   steps = {
     INIT: {
       state: 'init',
@@ -45,6 +47,8 @@ export class FaceApiComponent implements OnInit {
 
   ngOnInit() {
     this.stepSelect = this.steps.INIT;
+    this.width = window.innerWidth;
+    this.heigth = window.innerHeight;
     this.initVideo();
   }
 
@@ -106,6 +110,7 @@ export class FaceApiComponent implements OnInit {
 
   moreExpresion(resizedDetections) {
     let pass = false;
+    console.log('estado=', this.stepSelect.state);
     switch (this.stepSelect.state) {
       /*case this.steps.SERIUS.state:
         pass = this.matchParameter(resizedDetections.expressions.neutral);
@@ -126,7 +131,7 @@ export class FaceApiComponent implements OnInit {
   }
 
   matchParameter(param) {
-    return 0.6 < param;
+    return 0.5 < param;
   }
 
   nextStep() {
