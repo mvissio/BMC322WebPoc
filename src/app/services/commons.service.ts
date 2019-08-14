@@ -23,7 +23,7 @@ export class CommonsService {
     const body = {
       number: numberTxt,
       gender: genderTxt,
-      img: imgTxt
+      imgFace: imgTxt
     };
     return this.http.post(
       `https://desolate-fortress-69862.herokuapp.com/face`,

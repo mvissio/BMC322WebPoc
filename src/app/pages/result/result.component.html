@@ -1,9 +1,9 @@
 <div style="display:flex; flex-direction:column;align-items: center">
-  <b>DATOS VALIDADOS POR RENAPER</b>
+  <b>DATOS DNI VALIDADOS POR RENAPER</b>
   <div *ngIf="!typeOfString; else templateName">
     <div *ngFor="let item of content | keyvalue">
       <b>{{ item.key }}</b
-      >: {{ item.value |json }}
+      >: {{ item.value | json }}
       <div *ngIf="item.key === 'person'">
         - Datos de la persona -
         <div *ngFor="let option of item.value | keyvalue">
@@ -13,7 +13,16 @@
       </div>
     </div>
   </div>
-
+  <div class="button-content">
+    <button
+      class="button"
+      type="button"
+      value="CONTINUAR"
+      (click)="goToNext($event)"
+    >
+      CONTINUAR
+    </button>
+  </div>
   <ng-template #templateName>
     {{ content }}
     <input
@@ -21,6 +30,34 @@
       class="button"
       value="Vuelva a intentar"
       (click)="goDni()"
+    />
+  </ng-template>
+</div>
+<div
+  *ngIf="contentFace"
+  style="display:flex; flex-direction:column;align-items: center"
+>
+  <b>DATOS CARA VALIDADOS POR RENAPER</b>
+  <div *ngIf="!typeOfStringFace; else templateNameFace">
+    <div *ngFor="let item of contentFace | keyvalue">
+      <b>{{ item.key }}</b
+      >: {{ item.value | json }}
+      <div *ngIf="item.key === 'person'">
+        - Datos de la persona -
+        <div *ngFor="let option of item.value | keyvalue">
+          <b>{{ option.key }}</b
+          >: {{ option.value }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #templateNameFace>
+    {{ content }}
+    <input
+      type="button"
+      class="button"
+      value="Vuelva a intentar"
+      (click)="goToNext()"
     />
   </ng-template>
 </div>
