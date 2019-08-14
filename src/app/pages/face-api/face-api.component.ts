@@ -18,10 +18,10 @@ export class FaceApiComponent implements OnInit {
       state: 'init',
       message: 'Espere unos segundos, por favor'
     },
-    SERIUS: {
+    /*SERIUS: {
       state: 'serius',
       message: 'Mantenga la seriedad, por favor'
-    },
+    },*/
     HAPPY: {
       state: 'happy',
       message: 'Mantenga una sonrisa, por favor'
@@ -30,10 +30,10 @@ export class FaceApiComponent implements OnInit {
       state: 'angry',
       message: 'Mantenga un enojo, por favor'
     },
-    SURPRISED: {
+    /*SURPRISED: {
       state: 'surprised',
       message: 'Abra la boca , por favor'
-    },
+    },*/
     FINISH: {
       state: 'finish',
       message: 'Muchas gracias'
@@ -94,18 +94,18 @@ export class FaceApiComponent implements OnInit {
   moreExpresion(resizedDetections) {
     let pass = false;
     switch (this.stepSelect.state) {
-      case this.steps.SERIUS.state:
+      /*case this.steps.SERIUS.state:
         pass = this.matchParameter(resizedDetections.expressions.neutral);
-        break;
+        break;*/
       case this.steps.HAPPY.state:
         pass = this.matchParameter(resizedDetections.expressions.happy);
         break;
       case this.steps.ANGRY.state:
         pass = this.matchParameter(resizedDetections.expressions.angry);
         break;
-      case this.steps.SURPRISED.state:
+      /*case this.steps.SURPRISED.state:
         pass = this.matchParameter(resizedDetections.expressions.surprised);
-        break;
+        break;*/
     }
     if (pass) {
       this.nextStep();
@@ -119,20 +119,23 @@ export class FaceApiComponent implements OnInit {
   nextStep() {
     switch (this.stepSelect.state) {
       case this.steps.HAPPY.state:
-        this.stepSelect = this.steps.SERIUS;
-        break;
-      case this.steps.SERIUS.state:
         this.stepSelect = this.steps.ANGRY;
         break;
+      /* case this.steps.SERIUS.state:
+        this.stepSelect = this.steps.ANGRY;
+        break;*/
       case this.steps.ANGRY.state:
-        this.stepSelect = this.steps.SURPRISED;
-        break;
-      case this.steps.SURPRISED.state:
         this.stepSelect = this.steps.FINISH;
         timer(3000)
           .toPromise()
           .then(() => this.router.navigate(['/selfie']));
         break;
+      /*case this.steps.SURPRISED.state:
+        this.stepSelect = this.steps.FINISH;
+        timer(3000)
+          .toPromise()
+          .then(() => this.router.navigate(['/selfie']));
+        break;*/
     }
   }
 
