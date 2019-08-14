@@ -26,25 +26,38 @@ export class DniComponent implements OnInit {
   webcamImageFView = false;
   switched = false;
   legend1 = true;
+  allowCameraSwitch = true;
+  multipleWebcamsAvailable = false;
   public width: any;
   public heith: any;
   imgDNI: string;
   imgDNIDorso: string;
   codeReaded: any;
   detecto = false;
+  imageType = 'image/jpeg';
   subscribePerson: any;
+
+  // webcam snapshot trigger
+  private trigger: Subject<void> = new Subject<void>();
+
+  public videoOptions: MediaTrackConstraints = {
+    // width: {ideal: 1024},
+    // height: {ideal: 576}
+  };
+
+  // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
+  private nextWebcam: Subject<boolean | string> = new Subject<
+    boolean | string
+  >();
   constructor(
     private router: Router,
     private http: HttpClient,
     private commonsService: CommonsService
   ) {}
-
-  // webcam snapshot trigger
-  private trigger: Subject<void> = new Subject<void>();
-  // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
   public ngOnInit(): void {
     this.width = window.innerWidth;
     this.heith = window.innerHeight;
+
     // localStorage.clear();
   }
 
@@ -62,7 +75,24 @@ export class DniComponent implements OnInit {
   public handleInitError(error: WebcamInitError): void {
     this.errors.push(error);
   }
+  public showNextWebcam(directionOrDeviceId: boolean | string): void {
+    // true => move forward through devices
+    // false => move backwards through devices
+    // string => move to device with given deviceId
+    this.nextWebcam.next(directionOrDeviceId);
+  }
+  public cameraWasSwitched(deviceId: string): void {
+    console.log('active device: ' + deviceId);
+    this.deviceId = deviceId;
+    if (!this.switched) {
+      this.switched = true;
+      this.showNextWebcam(false);
+    }
+  }
 
+  public get nextWebcamObservable(): Observable<boolean | string> {
+    return this.nextWebcam.asObservable();
+  }
   public handleImage(webcamImage: WebcamImage): void {
     dbr.licenseKey =
       't0068NQAAACLXANtkbkqiXyqxKLgs4E96lS/m0s/4I3VNy1EhUBcqD84+8iWXS9CbBmmp3+qSxewQfSLBmPTiimqF1MEjhr8=';
