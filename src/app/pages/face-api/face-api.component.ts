@@ -50,45 +50,58 @@ export class FaceApiComponent implements OnInit {
 
   initVideo() {
     this.video = document.getElementById('video');
-    Promise.all([
-      faceapi.nets.tinyFaceDetector.loadFromUri(URI),
-      faceapi.nets.faceLandmark68Net.loadFromUri(URI),
-      faceapi.nets.faceRecognitionNet.loadFromUri(URI),
-      faceapi.nets.faceExpressionNet.loadFromUri(URI)
-    ]).then(dta => this.startVideo());
-    this.video.addEventListener('play', () => {
-      const canvas = faceapi.createCanvasFromMedia(this.video);
-      canvas.style.position = 'absolute';
-      document.getElementById('canv-content').append(canvas);
-      const displaySize = {
-        width: this.video.width,
-        height: this.video.height
-      };
-      faceapi.matchDimensions(canvas, displaySize);
-      setInterval(async () => {
-        const detections = await faceapi
-          .detectSingleFace(this.video, new faceapi.TinyFaceDetectorOptions())
-          .withFaceLandmarks()
-          .withFaceExpressions();
-        if (detections) {
-          const resizedDetections = faceapi.resizeResults(
-            detections,
-            displaySize
-          );
-          canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
-          if (this.showDraw) {
-            faceapi.draw.drawDetections(canvas, resizedDetections);
-            faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-            faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+    console.log('facepi video=', this.video);
+    try {
+      Promise.all([
+        faceapi.nets.tinyFaceDetector.loadFromUri(URI),
+        faceapi.nets.faceLandmark68Net.loadFromUri(URI),
+        faceapi.nets.faceRecognitionNet.loadFromUri(URI),
+        faceapi.nets.faceExpressionNet.loadFromUri(URI)
+      ]).then(dta => {
+        console.log('facepi dta=', dta);
+        this.startVideo();
+      });
+
+      this.video.addEventListener('play', () => {
+        console.log('faceapi video addeventlistener video=', this.video);
+        const canvas = faceapi.createCanvasFromMedia(this.video);
+        console.log('faceapi video addeventlistener canvas=', canvas);
+        canvas.style.position = 'absolute';
+        document.getElementById('canv-content').append(canvas);
+        const displaySize = {
+          width: this.video.width,
+          height: this.video.height
+        };
+        faceapi.matchDimensions(canvas, displaySize);
+        setInterval(async () => {
+          const detections = await faceapi
+            .detectSingleFace(this.video, new faceapi.TinyFaceDetectorOptions())
+            .withFaceLandmarks()
+            .withFaceExpressions();
+          if (detections) {
+            const resizedDetections = faceapi.resizeResults(
+              detections,
+              displaySize
+            );
+            canvas
+              .getContext('2d')
+              .clearRect(0, 0, canvas.width, canvas.height);
+            if (this.showDraw) {
+              faceapi.draw.drawDetections(canvas, resizedDetections);
+              faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+              faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+            }
+            if (this.stepSelect.state === this.steps.INIT.state) {
+              this.stepSelect = this.steps.HAPPY;
+            } else {
+              this.moreExpresion(resizedDetections);
+            }
           }
-          if (this.stepSelect.state === this.steps.INIT.state) {
-            this.stepSelect = this.steps.HAPPY;
-          } else {
-            this.moreExpresion(resizedDetections);
-          }
-        }
-      }, 500);
-    });
+        }, 500);
+      });
+    } catch (e) {
+      console.log('error=', e);
+    }
   }
 
   moreExpresion(resizedDetections) {
