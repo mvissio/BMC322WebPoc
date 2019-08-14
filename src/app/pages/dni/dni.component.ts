@@ -70,11 +70,13 @@ export class DniComponent implements OnInit {
 
     if (this.legend1) {
       this.imgDNI = this.webcamImageF.imageAsDataUrl;
+      localStorage.setItem('imgDNI', this.webcamImageF.imageAsDataUrl);
       this.legend1 = false;
       this.webcamImageFView = true;
       this.detecDocument(this.imgDNI);
       console.log('detecto documento?', this.detecto);
     } else {
+      localStorage.setItem('imgDNIDorso', this.webcamImageF.imageAsDataUrl);
       this.imgDNIDorso = this.webcamImageF.imageAsDataUrl;
       this.detecDocument(this.imgDNIDorso);
       console.log('detecto documento?', this.detecto);
@@ -185,13 +187,35 @@ export class DniComponent implements OnInit {
         } else {
           // TODO: mockeamos datos
           console.log('mockeamos datos al no leer codigo de barra');
+
           localStorage.setItem(
             'resultDNI',
             JSON.stringify({
               code: 10001,
               message: 'Exito',
-              person:
-                '{"number":"25984618","gender":"F","names":"Natalia Georgina","lastNames":"LO DUCA","birthdate":"18/06/1977","copy":"A","expirationDate":"04/01/2027","creationDate":"04/01/2012","cuil":"27259846183","streetAddress":"CANGALLO","numberStreet":"3011","floor":null,"department":"28","zipCode":"5521","city":"VILLA NUEVA","municipality":"GUAYMALLéN","province":"MENDOZA","country":"ARGENTINA","messageOfDeath":"Sin Aviso de Fallecimiento","nationality":"ARGENTINA","countryBirth":"ARGENTINA"}',
+              person: {
+                number: '25984618',
+                gender: 'F',
+                names: 'Natalia Georgina',
+                lastNames: 'LO DUCA',
+                birthdate: '18/06/1977',
+                copy: 'A',
+                expirationDate: '04/01/2027',
+                creationDate: '04/01/2012',
+                cuil: '27259846183',
+                streetAddress: 'CANGALLO',
+                numberStreet: '3011',
+                floor: null,
+                department: '28',
+                zipCode: '5521',
+                city: 'VILLA NUEVA',
+                municipality: 'GUAYMALLéN',
+                province: 'MENDOZA',
+                country: 'ARGENTINA',
+                messageOfDeath: 'Sin Aviso de Fallecimiento',
+                nationality: 'ARGENTINA',
+                countryBirth: 'ARGENTINA'
+              },
               valid: 'Vigente'
             })
           );

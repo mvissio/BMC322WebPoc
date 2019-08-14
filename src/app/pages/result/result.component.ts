@@ -11,6 +11,9 @@ export class ResultComponent implements OnInit {
   contentFace: any;
   typeOfString: boolean;
   typeOfStringFace: boolean;
+  selfieSRC;
+  imgDNISRC;
+  imgDNIDorsoSRC;
   constructor(private router: Router) {}
 
   ngOnInit() {
@@ -25,16 +28,16 @@ export class ResultComponent implements OnInit {
       valid: 'Vigente'
     };
     const result = localStorage.getItem('resultDNI');
-
-    this.typeOfString = typeof result === 'string';
-    this.content = this.typeOfString ? result : JSON.parse(result);
+    this.selfieSRC = localStorage.getItem('Selfie');
+    this.imgDNIDorsoSRC = localStorage.getItem('imgDNIDorso');
+    this.imgDNISRC = localStorage.getItem('imgDNI');
+    this.typeOfString = false;
+    this.content = JSON.parse(result);
 
     const resultFace = localStorage.getItem('resultFace');
     if (result) {
-      this.typeOfStringFace = typeof resultFace === 'string';
-      this.contentFace = this.typeOfStringFace
-        ? resultFace
-        : JSON.parse(resultFace);
+      this.typeOfStringFace = false;
+      this.contentFace = JSON.parse(resultFace);
     }
   }
   goDni() {
