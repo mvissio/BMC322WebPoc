@@ -1,12 +1,6 @@
-import {
-  Component,
-  OnInit,
-  Output,
-  EventEmitter,
-  HostListener
-} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
-import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
+import { WebcamImage, WebcamInitError } from 'ngx-webcam';
 import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -38,6 +32,7 @@ export class DniComponent implements OnInit {
   imgDNIDorso: string;
   codeReaded: any;
   detecto = false;
+  subscribePerson: any;
   constructor(
     private router: Router,
     private http: HttpClient,
@@ -116,26 +111,26 @@ export class DniComponent implements OnInit {
   }
   public goToNext() {
     if (!this.codeReaded) {
-      this.codeReaded = this.getReadCodeBar(this.imgDNI);
+      this.getReadCodeBar(this.imgDNI, 1);
     }
+  }
+  public goToNextDorso() {
     if (!this.codeReaded) {
-      this.codeReaded = this.getReadCodeBar(this.imgDNIDorso);
+      this.getReadCodeBar(this.imgDNIDorso, 2);
     }
-
+  }
+  public goToResult() {
     if (!this.codeReaded) {
       localStorage.setItem('resultDNI', 'no se leyó el código de barra');
     }
 
     this.router.navigate(['result']);
-
-    // this.webcamImageFView = false;
-    // this.legend1 = false;
   }
-  getReadCodeBar(imgToRead) {
+  getReadCodeBar(imgToRead, order) {
     dbr
       .createInstance()
       .then(reader => reader.decode(imgToRead))
-      .then(r => {
+      .then(async r => {
         console.log('result=', r);
         // si encontró un código de barra
         if (r.length > 0) {
@@ -166,15 +161,22 @@ export class DniComponent implements OnInit {
             localStorage.setItem('number', dni);
             localStorage.setItem('gender', sexo);
             if (dni && sexo && tramite) {
-              this.commonsService
+              this.subscribePerson = this.commonsService
                 .getRenaperPerson(dni, sexo, tramite)
-                .subscribe(res => {
-                  localStorage.setItem('resultDNI', JSON.stringify(res));
-                  console.log('resultado del servicio DNI:', res);
-                  return true;
-                  // this.scanner.close();
-                });
+                .subscribe(
+                  res => {
+                    localStorage.setItem('resultDNI', JSON.stringify(res));
+                    console.log('resultado del servicio DNI:', res);
+                    this.subscribePerson.unsubscribe();
+                    this.codeReaded = true;
+                  },
+                  () => this.goToResult()
+                );
+            } else {
+              this.nextProcess(order);
             }
+          } else {
+            this.nextProcess(order);
           }
         } else {
           // TODO: mockeamos datos
@@ -191,9 +193,15 @@ export class DniComponent implements OnInit {
           );
           localStorage.setItem('number', '25984618');
           localStorage.setItem('gender', 'F');
+          this.goToResult();
         }
-        return false;
       });
-    return false;
+  }
+  nextProcess(order) {
+    if (order === 1) {
+      this.goToNextDorso();
+    } else {
+      this.goToResult();
+    }
   }
 }
