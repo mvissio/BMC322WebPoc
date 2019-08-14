@@ -111,6 +111,9 @@ export class DniComponent implements OnInit {
   }
   public goToNext() {
     if (!this.codeReaded) {
+      localStorage.setItem('resultDNI', 'no se leyó el código de barra');
+    }
+    if (!this.codeReaded) {
       this.getReadCodeBar(this.imgDNI, 1);
     }
   }
@@ -120,10 +123,6 @@ export class DniComponent implements OnInit {
     }
   }
   public goToResult() {
-    if (!this.codeReaded) {
-      localStorage.setItem('resultDNI', 'no se leyó el código de barra');
-    }
-
     this.router.navigate(['result']);
   }
   getReadCodeBar(imgToRead, order) {
@@ -170,12 +169,17 @@ export class DniComponent implements OnInit {
                     this.subscribePerson.unsubscribe();
                     this.codeReaded = true;
                   },
-                  () => this.goToResult()
+                  () => {
+                    console.log('process0');
+                    this.goToResult();
+                  }
                 );
             } else {
+              console.log('process1');
               this.nextProcess(order);
             }
           } else {
+            console.log('process2');
             this.nextProcess(order);
           }
         } else {
@@ -191,6 +195,7 @@ export class DniComponent implements OnInit {
               valid: 'Vigente'
             })
           );
+          console.log('process3');
           localStorage.setItem('number', '25984618');
           localStorage.setItem('gender', 'F');
           this.goToResult();
