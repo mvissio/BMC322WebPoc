@@ -34,7 +34,7 @@
 <h2>
   Face
 </h2>
-<div class="table-responsive" *ngIf="person">
+<div class="table-responsive" *ngIf="contentFace">
   <table class="table">
     <thead>
     <tr>
@@ -43,7 +43,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr class="table-info" *ngFor="let option of contentFace | keyvalue" >
+    <tr class="table-secondary" *ngFor="let option of contentFace | keyvalue" >
       <th scope="row">{{option.key}}</th>
       <td>{{option.value}}</td>
     </tr>

@@ -10,8 +10,7 @@ import {PersonRenaper, ResponseRenaper} from '../../inteface/model.inteface';
 export class ResultComponent implements OnInit {
   content: ResponseRenaper;
   person: PersonRenaper;
-  contentFace: ResponseRenaper;
-  contentPerson: PersonRenaper;
+  contentFace;
   typeOfString: boolean;
   typeOfStringFace: boolean;
   selfieSRC;
@@ -34,13 +33,11 @@ export class ResultComponent implements OnInit {
     this.selfieSRC = localStorage.getItem('Selfie');
     this.imgDNIDorsoSRC = localStorage.getItem('imgDNIDorso');
     this.imgDNISRC = localStorage.getItem('imgDNI');
-    this.typeOfString = false;
     this.content = JSON.parse(result);
     this.person = JSON.parse(this.content.person);
 
     const resultFace = localStorage.getItem('resultFace');
     if (result) {
-      this.typeOfStringFace = false;
       this.contentFace = JSON.parse(resultFace);
     }
   }
