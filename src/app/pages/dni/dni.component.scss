@@ -111,6 +111,10 @@ ul.links {
 
       animation: infinite resplandorAnimation 2s;
     }
+    ::ng-deep .camera-switch {
+      display: hidden;
+    }
+
     @keyframes resplandorAnimation {
       0%,
       100% {
@@ -304,7 +308,7 @@ video {
     text-indent: -3ch;
   }
 }
-#errorMessage{
+#errorMessage {
   position: fixed;
   bottom: 5%;
   width: 100%;
