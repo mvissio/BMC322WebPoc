@@ -14,18 +14,17 @@
       (cameraSwitched)="cameraWasSwitched($event)"
       (initError)="handleInitError($event)"
     ></webcam>
-    <div class="countdown"></div>
     <div id="legend1" *ngIf="legend1" class="legend">
       Ubicá el FRENTE de tu DNI en el recuadro
-      <!---<div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
+      <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
         📸
-      </div>-->
+      </div>
     </div>
     <div id="legend2" *ngIf="!legend1" class="legend">
       Ubicá el DORSO de tu DNI en el recuadro
-      <!--<div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
+      <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
         📸
-      </div>-->
+      </div>
     </div>
   </div>
   <div id="message" *ngIf="webcamImageFView">

@@ -62,11 +62,7 @@ export class DniComponent implements OnInit {
   }
 
   public triggerSnapshot(): void {
-    setTimeout(function() {
-      if (this.trigger) {
-        this.trigger.next();
-      }
-    }, 2000);
+    this.trigger.next();
   }
   public get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();
@@ -84,7 +80,6 @@ export class DniComponent implements OnInit {
     // false => move backwards through devices
     // string => move to device with given deviceId
     this.nextWebcam.next(directionOrDeviceId);
-    this.triggerSnapshot();
   }
   public cameraWasSwitched(deviceId: string): void {
     console.log('active device: ' + deviceId);
