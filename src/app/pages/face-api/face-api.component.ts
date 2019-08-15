@@ -13,8 +13,8 @@ export const URI = '../../assets/models';
 export class FaceApiComponent implements OnInit {
   video: any;
   stepSelect: any = {};
-  width;
-  heigth;
+  width = 300;
+  heigth = 300;
   steps = {
     INIT: {
       state: 'init',
@@ -110,7 +110,7 @@ export class FaceApiComponent implements OnInit {
 
   moreExpresion(resizedDetections) {
     let pass = false;
-    console.log('estado=', this.stepSelect.state);
+    console.log('estado animo=', resizedDetections.expressions);
     switch (this.stepSelect.state) {
       /*case this.steps.SERIUS.state:
         pass = this.matchParameter(resizedDetections.expressions.neutral);
