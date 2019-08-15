@@ -1,33 +1,52 @@
 <div style="display:flex;flex-direction:row;">
   <div style="display:flex;flex-direction:column">
     CARA
-    <img [src]="selfieSRC" width="50%"/>
+    <img [src]="selfieSRC" width="50%" />
   </div>
   <div style="display:flex;flex-direction:column">
     DNI
-    <img [src]="imgDNISRC" width="50%"/>
+    <img [src]="imgDNISRC" width="50%" />
   </div>
   <div style="display:flex;flex-direction:column">
     DNI DORSO
-    <img [src]="imgDNIDorsoSRC" width="50%"/>
+    <img [src]="imgDNIDorsoSRC" width="50%" />
   </div>
 </div>
 <h2>
   Persona
 </h2>
+<div class="table-responsive" *ngIf="content">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Key</th>
+        <th scope="col">Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table-primary" *ngFor="let option of content | keyvalue">
+        <th scope="row">{{ option.key }}</th>
+        <td>{{ option.value }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<h2>
+  Información Personal
+</h2>
 <div class="table-responsive" *ngIf="person">
   <table class="table">
     <thead>
-    <tr>
-      <th scope="col">Key</th>
-      <th scope="col">Value</th>
-    </tr>
+      <tr>
+        <th scope="col">Key</th>
+        <th scope="col">Value</th>
+      </tr>
     </thead>
     <tbody>
-    <tr class="table-primary" *ngFor="let option of person | keyvalue" >
-      <th scope="row">{{option.key}}</th>
-      <td>{{option.value}}</td>
-    </tr>
+      <tr class="table-primary" *ngFor="let option of person | keyvalue">
+        <th scope="row">{{ option.key }}</th>
+        <td>{{ option.value }}</td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -37,16 +56,16 @@
 <div class="table-responsive" *ngIf="contentFace">
   <table class="table">
     <thead>
-    <tr>
-      <th scope="col">Key</th>
-      <th scope="col">Value</th>
-    </tr>
+      <tr>
+        <th scope="col">Key</th>
+        <th scope="col">Value</th>
+      </tr>
     </thead>
     <tbody>
-    <tr class="table-secondary" *ngFor="let option of contentFace | keyvalue" >
-      <th scope="row">{{option.key}}</th>
-      <td>{{option.value}}</td>
-    </tr>
+      <tr class="table-secondary" *ngFor="let option of contentFace | keyvalue">
+        <th scope="row">{{ option.key }}</th>
+        <td>{{ option.value }}</td>
+      </tr>
     </tbody>
   </table>
 </div>
