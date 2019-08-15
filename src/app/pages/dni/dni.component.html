@@ -16,13 +16,23 @@
     ></webcam>
     <div id="legend1" *ngIf="legend1" class="legend">
       Ubicá el FRENTE de tu DNI en el recuadro
-      <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
+      <div
+        class="actionBtn"
+        [hidden]="inProgress"
+        (click)="triggerSnapshot()"
+        title="Take Picture"
+      >
         📸
       </div>
     </div>
     <div id="legend2" *ngIf="!legend1" class="legend">
       Ubicá el DORSO de tu DNI en el recuadro
-      <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
+      <div
+        class="actionBtn"
+        (click)="triggerSnapshot()"
+        title="Take Picture"
+        [hidden]="inProgress"
+      >
         📸
       </div>
     </div>
@@ -43,11 +53,22 @@
           de tu DNI.
         </div>
       </div>
-      <div class="button-content" *ngIf="imgDNIDorso">
+      <div class="button-content">
+        <span *ngIf="!detecto"
+          >Vuelva a intentarlo, no se dectectó documento</span
+        >
         <button
+          *ngIf="!detecto"
           class="button"
           type="button"
-          value="CONTINUAR"
+          (click)="goBack()"
+        >
+          VUELVA A INTENTAR
+        </button>
+        <button
+          *ngIf="imgDNIDorso"
+          class="button"
+          type="button"
           (click)="goToNext($event)"
         >
           CONTINUAR

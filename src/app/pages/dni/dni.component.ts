@@ -36,6 +36,7 @@ export class DniComponent implements OnInit {
   detecto = false;
   imageType = 'image/jpeg';
   subscribePerson: any;
+  inProgress = false;
 
   // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
@@ -104,21 +105,19 @@ export class DniComponent implements OnInit {
       this.legend1 = false;
       this.webcamImageFView = true;
       this.detecDocument(this.imgDNI);
-      console.log('detecto documento?', this.detecto);
     } else {
       localStorage.setItem('imgDNIDorso', this.webcamImageF.imageAsDataUrl);
       this.imgDNIDorso = this.webcamImageF.imageAsDataUrl;
       this.detecDocument(this.imgDNIDorso);
-      console.log('detecto documento?', this.detecto);
     }
     if (this.imgDNI && this.imgDNIDorso) {
       this.pictureTaken.emit(webcamImage);
     }
   }
   detecDocument(img) {
-    const detecDocumentSub = this.commonsService
-      .detectDocument(img)
-      .subscribe((res: Array<IAwsResponse>) => {
+    this.inProgress = true;
+    const detecDocumentSub = this.commonsService.detectDocument(img).subscribe(
+      (res: Array<IAwsResponse>) => {
         const document: IAwsResponse = res.find(
           r => r.Name === CONST_AWS.DOCUMENT
         );
@@ -135,11 +134,25 @@ export class DniComponent implements OnInit {
             license.Confidence >= 70)
         ) {
           this.detecto = true;
+          this.inProgress = false;
           detecDocumentSub.unsubscribe();
         }
         detecDocumentSub.unsubscribe();
         this.detecto = false;
-      });
+        this.inProgress = false;
+      },
+      () => {
+        console.log('detecto documento?', this.detecto);
+        /*this.detecto = true;
+        this.inProgress = false;*/
+      }
+    );
+  }
+  goBack() {
+    this.legend1 = true;
+    this.webcamImageFView = false;
+    this.detecto = false;
+    this.inProgress = false;
   }
   public goToNext() {
     if (!this.codeReaded) {
