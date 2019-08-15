@@ -1,83 +1,52 @@
 <div style="display:flex;flex-direction:row;">
   <div style="display:flex;flex-direction:column">
     CARA
-    <img [src]="selfieSRC" width="50%" />
+    <img [src]="selfieSRC" width="50%"/>
   </div>
   <div style="display:flex;flex-direction:column">
     DNI
-    <img [src]="imgDNISRC" width="50%" />
+    <img [src]="imgDNISRC" width="50%"/>
   </div>
   <div style="display:flex;flex-direction:column">
     DNI DORSO
-    <img [src]="imgDNIDorsoSRC" width="50%" />
+    <img [src]="imgDNIDorsoSRC" width="50%"/>
   </div>
 </div>
-<div style="display:flex; flex-direction:column;align-items: center">
-  <b>DATOS DNI VALIDADOS POR RENAPER</b>
-  <div
-    *ngIf="!typeOfString; else templateName"
-    style="display:flex; flex-direction:column;align-items: center"
-  >
-    <div *ngFor="let item of content | keyvalue">
-      <b>{{ item.key }}</b
-      >: {{ item.value | json }}
-      <div *ngIf="item.key === 'person'">
-        - Datos de la persona -
-        <div
-          *ngFor="let option of item.value | keyvalue"
-          style="display:flex; flex-direction:row;justify-content: center"
-        >
-          <b>{{ option.key }}</b
-          >: {{ option.value }}
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="button-content">
-    <button
-      class="button"
-      type="button"
-      value="CONTINUAR"
-      (click)="goToNext($event)"
-    >
-      CONTINUAR
-    </button>
-  </div>
-  <ng-template #templateName>
-    {{ content }}
-    <input
-      type="button"
-      class="button"
-      value="Vuelva a intentar"
-      (click)="goDni()"
-    />
-  </ng-template>
+<h2>
+  Persona
+</h2>
+<div class="table-responsive" *ngIf="person">
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Key</th>
+      <th scope="col">Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="table-primary" *ngFor="let option of person | keyvalue" >
+      <th scope="row">{{option.key}}</th>
+      <td>{{option.value}}</td>
+    </tr>
+    </tbody>
+  </table>
 </div>
-<div
-  *ngIf="contentFace"
-  style="display:flex; flex-direction:column;align-items: center"
->
-  <b>DATOS CARA VALIDADOS POR RENAPER</b>
-  <div *ngIf="!typeOfStringFace; else templateNameFace">
-    <div *ngFor="let item of contentFace | keyvalue">
-      <b>{{ item.key }}</b
-      >: {{ item.value | json }}
-      <div *ngIf="item.key === 'person'">
-        - Datos de la persona -
-        <div *ngFor="let option of item.value | keyvalue">
-          <b>{{ option.key }}</b
-          >: {{ option.value }}
-        </div>
-      </div>
-    </div>
-  </div>
-  <ng-template #templateNameFace>
-    {{ content }}
-    <input
-      type="button"
-      class="button"
-      value="Vuelva a intentar"
-      (click)="goToNext()"
-    />
-  </ng-template>
+<h2>
+  Face
+</h2>
+<div class="table-responsive" *ngIf="person">
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Key</th>
+      <th scope="col">Value</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="table-info" *ngFor="let option of contentFace | keyvalue" >
+      <th scope="row">{{option.key}}</th>
+      <td>{{option.value}}</td>
+    </tr>
+    </tbody>
+  </table>
 </div>
