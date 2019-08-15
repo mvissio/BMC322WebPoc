@@ -32,3 +32,21 @@
   right: 43rem;
   bottom: 9rem;
 }
+#info{
+  position: absolute;
+  ;
+}
+
+
+.bottom-15 {
+  position: fixed;
+  bottom: 13%;
+  width: 100%;
+  text-align: center;
+}
+.actionBtn{
+  position: fixed;
+  bottom: 40%;
+  left: 45%;
+  font-size: xx-large;
+}

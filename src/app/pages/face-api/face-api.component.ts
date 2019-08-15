@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, timer } from 'rxjs';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Observable, timer} from 'rxjs';
+import {Router} from '@angular/router';
 
 declare const faceapi: any;
 export const URI = '../../assets/models';
@@ -14,7 +14,6 @@ export class FaceApiComponent implements OnInit {
   video: any;
   stepSelect: any = {};
   width = 300;
-  heigth = 300;
   steps = {
     INIT: {
       state: 'init',
@@ -43,29 +42,27 @@ export class FaceApiComponent implements OnInit {
   };
   showDraw = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+  }
 
   ngOnInit() {
     this.stepSelect = this.steps.INIT;
     this.width = window.innerWidth;
-    // this.heigth = window.innerHeight;
     this.initVideo();
   }
 
   initVideo() {
     this.video = document.getElementById('video');
     console.log('facepi video=', this.video);
-    try {
-      Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri(URI),
-        faceapi.nets.faceLandmark68Net.loadFromUri(URI),
-        faceapi.nets.faceRecognitionNet.loadFromUri(URI),
-        faceapi.nets.faceExpressionNet.loadFromUri(URI)
-      ]).then(dta => {
-        console.log('facepi dta=', dta);
-        this.startVideo();
-      });
-
+    Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri(URI),
+      faceapi.nets.faceLandmark68Net.loadFromUri(URI),
+      faceapi.nets.faceRecognitionNet.loadFromUri(URI),
+      faceapi.nets.faceExpressionNet.loadFromUri(URI)
+    ]).then(dta => {
+      console.log('facepi dta=', dta);
+      this.startVideo();
+    }).then(() => {
       this.video.addEventListener('play', () => {
         console.log('faceapi video addeventlistener video=', this.video);
         const canvas = faceapi.createCanvasFromMedia(this.video);
@@ -103,9 +100,7 @@ export class FaceApiComponent implements OnInit {
           }
         }, 500);
       });
-    } catch (e) {
-      console.log('error=', e);
-    }
+    }).catch(e => console.log('error=', e));
   }
 
   moreExpresion(resizedDetections) {
@@ -159,7 +154,7 @@ export class FaceApiComponent implements OnInit {
 
   startVideo() {
     navigator.getUserMedia(
-      { video: {} },
+      {video: {}},
       stream => (this.video.srcObject = stream),
       err => console.error(err)
     );

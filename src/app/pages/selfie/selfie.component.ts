@@ -31,7 +31,6 @@ export class SelfieComponent implements OnInit {
   ) {}
   private trigger: Subject<void> = new Subject<void>();
   ngOnInit() {
-    this.heith = window.innerHeight;
     this.width = window.innerWidth;
   }
 
