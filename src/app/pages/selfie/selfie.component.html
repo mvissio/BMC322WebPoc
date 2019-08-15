@@ -5,6 +5,7 @@
       [width]="width"
       class="fa-rotate-90"
       [imageType]="imageType"
+      [allowCameraSwitch]="true"
       [trigger]="triggerObservable"
       (imageCapture)="handleImage($event)"
       *ngIf="showWebcam"
