@@ -1,5 +1,4 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-
 import { WebcamImage, WebcamInitError } from 'ngx-webcam';
 import { Subject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
@@ -8,7 +7,6 @@ import { CommonsService } from 'src/app/services/commons.service';
 import { IAwsResponse } from '../../inteface/model.inteface';
 import { CONST_AWS } from '../../const/const';
 const dbr = (window as any).dbr;
-
 @Component({
   selector: 'app-dni',
   templateUrl: './dni.component.html',
@@ -17,7 +15,6 @@ const dbr = (window as any).dbr;
 export class DniComponent implements OnInit {
   @Output()
   public pictureTaken = new EventEmitter<WebcamImage>();
-
   // toggle webcam on/off
   public showWebcam = true;
   public deviceId: string;
@@ -36,17 +33,9 @@ export class DniComponent implements OnInit {
   detecto = false;
   imageType = 'image/jpeg';
   subscribePerson: any;
-  inProgress = false;
-
-  // webcam snapshot trigger
+  errorMessage: string;
   private trigger: Subject<void> = new Subject<void>();
-
-  public videoOptions: MediaTrackConstraints = {
-    // width: {ideal: 1024},
-    // height: {ideal: 576}
-  };
-
-  // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
+  public videoOptions: MediaTrackConstraints = {};
   private nextWebcam: Subject<boolean | string> = new Subject<
     boolean | string
   >();
@@ -58,28 +47,21 @@ export class DniComponent implements OnInit {
   public ngOnInit(): void {
     this.width = window.innerWidth;
     this.heith = window.innerHeight;
-
     // localStorage.clear();
   }
-
   public triggerSnapshot(): void {
     this.trigger.next();
   }
   public get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();
   }
-
   public toggleWebcam(): void {
     this.showWebcam = !this.showWebcam;
   }
-
   public handleInitError(error: WebcamInitError): void {
     this.errors.push(error);
   }
   public showNextWebcam(directionOrDeviceId: boolean | string): void {
-    // true => move forward through devices
-    // false => move backwards through devices
-    // string => move to device with given deviceId
     this.nextWebcam.next(directionOrDeviceId);
   }
   public cameraWasSwitched(deviceId: string): void {
@@ -90,7 +72,6 @@ export class DniComponent implements OnInit {
       this.showNextWebcam(false);
     }
   }
-
   public get nextWebcamObservable(): Observable<boolean | string> {
     return this.nextWebcam.asObservable();
   }
@@ -98,26 +79,25 @@ export class DniComponent implements OnInit {
     dbr.licenseKey =
       't0068NQAAACLXANtkbkqiXyqxKLgs4E96lS/m0s/4I3VNy1EhUBcqD84+8iWXS9CbBmmp3+qSxewQfSLBmPTiimqF1MEjhr8=';
     this.webcamImageF = webcamImage;
-
+    this.webcamImageFView = false;
+    this.errorMessage = undefined;
     if (this.legend1) {
       this.imgDNI = this.webcamImageF.imageAsDataUrl;
-      localStorage.setItem('imgDNI', this.webcamImageF.imageAsDataUrl);
-      this.legend1 = false;
-      this.webcamImageFView = true;
       this.detecDocument(this.imgDNI);
     } else {
       localStorage.setItem('imgDNIDorso', this.webcamImageF.imageAsDataUrl);
       this.imgDNIDorso = this.webcamImageF.imageAsDataUrl;
       this.detecDocument(this.imgDNIDorso);
+      console.log('detecto documento?', this.detecto);
     }
     if (this.imgDNI && this.imgDNIDorso) {
       this.pictureTaken.emit(webcamImage);
     }
   }
   detecDocument(img) {
-    this.inProgress = true;
-    const detecDocumentSub = this.commonsService.detectDocument(img).subscribe(
-      (res: Array<IAwsResponse>) => {
+    const detecDocumentSub = this.commonsService
+      .detectDocument(img)
+      .subscribe((res: Array<IAwsResponse>) => {
         const document: IAwsResponse = res.find(
           r => r.Name === CONST_AWS.DOCUMENT
         );
@@ -134,32 +114,28 @@ export class DniComponent implements OnInit {
             license.Confidence >= 70)
         ) {
           this.detecto = true;
-          this.inProgress = false;
-          detecDocumentSub.unsubscribe();
+          this.legend1 = false;
+          localStorage.setItem('imgDNI', this.webcamImageF.imageAsDataUrl);
+          this.errorMessage = undefined;
+          this.webcamImageFView = true;
+        } else {
+          this.detecto = false;
+          this.errorMessage = 'No se detecto ningun documento';
+          this.webcamImageFView = false;
         }
-        detecDocumentSub.unsubscribe();
-        this.detecto = false;
-        this.inProgress = false;
-      },
-      () => {
         console.log('detecto documento?', this.detecto);
-        /*this.detecto = true;
-        this.inProgress = false;*/
-      }
-    );
-  }
-  goBack() {
-    this.legend1 = true;
-    this.webcamImageFView = false;
-    this.detecto = false;
-    this.inProgress = false;
+      })
+      .add(() => detecDocumentSub.unsubscribe());
   }
   public goToNext() {
     if (!this.codeReaded) {
-      localStorage.setItem('resultDNI', 'no se leyó el código de barra');
+      this.getReadCodeBar(this.imgDNI, 1);
     }
     if (!this.codeReaded) {
-      this.getReadCodeBar(this.imgDNI, 1);
+      this.getReadCodeBar(this.imgDNIDorso, 2);
+    }
+    if (!this.codeReaded) {
+      localStorage.setItem('resultDNI', 'no se leyó el código de barra');
     }
   }
   public goToNextDorso() {
@@ -168,28 +144,21 @@ export class DniComponent implements OnInit {
     }
   }
   public goToResult() {
-    this.router.navigate(['result']);
+    this.router.navigate(['faceapi']);
   }
   getReadCodeBar(imgToRead, order) {
     dbr
       .createInstance()
       .then(reader => reader.decode(imgToRead))
       .then(async r => {
-        console.log('result=', r);
         // si encontró un código de barra
         if (r.length > 0) {
           const rr = r[0];
-          console.log('result0=', r[0]);
-
           const strMsg = rr.BarcodeText;
-
-          console.log('datos=', strMsg);
           const codigo = strMsg.split('@');
           // length=9 00384052743@CORTEZ LO DUCA@AGOSTINA@F@54692573@A@12/06/2015@06/07/2015@276
           // length=17  @25984618    @A@1@LO DUCA@NATALIA GEORGINA@ARGENTINA@18/06/1977@F@04/01/2012@00087712904@7013 @04/01/2027@61@0@ILR:2.20 C:110927.01 (GM/EXE-MOVE-HM)@UNIDAD #13 || S/N: 0040>2008>>0010
-
           if (codigo.length > 0) {
-            console.log('length=' + codigo.length);
             // dni nuevo
             let tramite = codigo[0].trim();
             let dni = codigo[4].trim();
@@ -200,8 +169,6 @@ export class DniComponent implements OnInit {
               dni = codigo[1].trim();
               sexo = codigo[8].trim();
             }
-
-            console.log('datos dni sexo tramite=', dni, sexo, tramite);
             localStorage.setItem('number', dni);
             localStorage.setItem('gender', sexo);
             if (dni && sexo && tramite) {
@@ -229,39 +196,38 @@ export class DniComponent implements OnInit {
           }
         } else {
           // TODO: mockeamos datos
-          console.log('mockeamos datos al no leer codigo de barra');
-
-          localStorage.setItem(
-            'resultDNI',
-            JSON.stringify({
-              code: 10001,
-              message: 'Exito',
-              person: {
-                number: '25984618',
-                gender: 'F',
-                names: 'Natalia Georgina',
-                lastNames: 'LO DUCA',
-                birthdate: '18/06/1977',
-                copy: 'A',
-                expirationDate: '04/01/2027',
-                creationDate: '04/01/2012',
-                cuil: '27259846183',
-                streetAddress: 'CANGALLO',
-                numberStreet: '3011',
-                floor: null,
-                department: '28',
-                zipCode: '5521',
-                city: 'VILLA NUEVA',
-                municipality: 'GUAYMALLéN',
-                province: 'MENDOZA',
-                country: 'ARGENTINA',
-                messageOfDeath: 'Sin Aviso de Fallecimiento',
-                nationality: 'ARGENTINA',
-                countryBirth: 'ARGENTINA'
-              },
-              valid: 'Vigente'
-            })
-          );
+          // console.log('mockeamos datos al no leer codigo de barra');
+          // localStorage.setItem(
+          //   'resultDNI',
+          //   JSON.stringify({
+          //     code: 10001,
+          //     message: 'Exito',
+          //     person: {
+          //       number: '25984618',
+          //       gender: 'F',
+          //       names: 'Natalia Georgina',
+          //       lastNames: 'LO DUCA',
+          //       birthdate: '18/06/1977',
+          //       copy: 'A',
+          //       expirationDate: '04/01/2027',
+          //       creationDate: '04/01/2012',
+          //       cuil: '27259846183',
+          //       streetAddress: 'CANGALLO',
+          //       numberStreet: '3011',
+          //       floor: null,
+          //       department: '28',
+          //       zipCode: '5521',
+          //       city: 'VILLA NUEVA',
+          //       municipality: 'GUAYMALLéN',
+          //       province: 'MENDOZA',
+          //       country: 'ARGENTINA',
+          //       messageOfDeath: 'Sin Aviso de Fallecimiento',
+          //       nationality: 'ARGENTINA',
+          //       countryBirth: 'ARGENTINA'
+          //     },
+          //     valid: 'Vigente'
+          //   })
+          // );
           console.log('process3');
           localStorage.setItem('number', '25984618');
           localStorage.setItem('gender', 'F');
