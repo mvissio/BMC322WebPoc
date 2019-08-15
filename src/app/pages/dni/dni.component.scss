@@ -2,12 +2,10 @@
 .actionBtn {
   font-size: 3em;
   cursor: pointer;
+  -webkit-transform: rotate(90deg);
   transform: rotate(90deg);
-  padding-left: 11rem;
-  margin: 0;
-  margin-bottom: -9rem;
+  margin-right: 3rem;
 }
-
 .snapshot {
   text-align: center;
   img {
@@ -305,4 +303,11 @@ video {
   100% {
     text-indent: -3ch;
   }
+}
+#errorMessage{
+  position: fixed;
+  bottom: 5%;
+  width: 100%;
+  padding: 2%;
+  text-align: center;
 }

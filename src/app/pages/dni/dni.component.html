@@ -1,8 +1,8 @@
 <div id="content-wrapper">
   <div id="capture-screen">
     <webcam
-      [height]="width"
-      [width]="heith"
+      [height]="300"
+      [width]="width"
       class="fa-rotate-90"
       [imageType]="imageType"
       [trigger]="triggerObservable"
@@ -27,17 +27,17 @@
       </div>
     </div>
   </div>
-  <div id="message" *ngIf="webcamImageFView">
+  <div id="message" *ngIf="webcamImageFView && !errorMessage">
     <div id="result-screen">
       <div id="back2"></div>
       <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
-        <img [width]="width" [src]="webcamImageF.imageAsDataUrl" />
+        <img [width]="width" [src]="webcamImageF.imageAsDataUrl"/>
       </div>
       <div class="lower-panel">
         <div id="checked"></div>
         <div class="title">¡Listo!</div>
         <div class="subtitle" *ngIf="!imgDNIDorso">
-          Ahora continuaremos con el<br /><span id="bold">{{
+          Ahora continuaremos con el<br/><span id="bold">{{
             !legend1 ? 'dorso' : ''
           }}</span>
           de tu DNI.
@@ -55,4 +55,5 @@
       </div>
     </div>
   </div>
+  <div id="errorMessage" class="alert-info text-center text-capitalize" *ngIf="errorMessage">{{errorMessage}}</div>
 </div>

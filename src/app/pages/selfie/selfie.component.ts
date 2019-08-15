@@ -49,7 +49,8 @@ export class SelfieComponent implements OnInit {
   public handleInitError(error: WebcamInitError): void {
     this.errors.push(error);
   }
-  public handleImage(webcamImage: WebcamImage): void {
+  public handleImage(webcamImage: WebcamImage): void
+  {
     this.webcamImageF = webcamImage;
     localStorage.setItem('Selfie', this.webcamImageF.imageAsDataUrl);
     this.validarRenaper();
@@ -59,24 +60,24 @@ export class SelfieComponent implements OnInit {
     const dni = localStorage.getItem('number');
     const gender = localStorage.getItem('gender');
     if (dni && selfie && gender) {
-      /*
-      TODO: para cuando ande todo
+
+      // TODO: para cuando ande todo
       this.commonsService.getRenaperFace(dni, gender, selfie).subscribe(res => {
         localStorage.setItem('resultFace', JSON.stringify(res));
         console.log('resultado del servicio FACE:', res);
         this.router.navigate(['result']);
-      });*/
-      console.log('mockeamos llamada a renaper para cara');
-      localStorage.setItem(
-        'resultFace',
-        JSON.stringify({
-          code: 2003,
-          message: 'Face compare success',
-          confidence: 0,
-          matchThreshold: false,
-          faceAuthenticationId: 2698723
-        })
-      );
+      });
+      // console.log('mockeamos llamada a renaper para cara');
+      // localStorage.setItem(
+      //   'resultFace',
+      //   JSON.stringify({
+      //     code: 2003,
+      //     message: 'Face compare success',
+      //     confidence: 0,
+      //     matchThreshold: false,
+      //     faceAuthenticationId: 2698723
+      //   })
+      // );
       this.router.navigate(['result']);
     } else {
       console.log('No existen los datos de Cara para validar contra renaper');

@@ -134,21 +134,12 @@ export class FaceApiComponent implements OnInit {
       case this.steps.HAPPY.state:
         this.stepSelect = this.steps.ANGRY;
         break;
-      /* case this.steps.SERIUS.state:
-        this.stepSelect = this.steps.ANGRY;
-        break;*/
       case this.steps.ANGRY.state:
         this.stepSelect = this.steps.FINISH;
         timer(3000)
           .toPromise()
           .then(() => this.router.navigate(['/selfie']));
         break;
-      /*case this.steps.SURPRISED.state:
-        this.stepSelect = this.steps.FINISH;
-        timer(3000)
-          .toPromise()
-          .then(() => this.router.navigate(['/selfie']));
-        break;*/
     }
   }
 
