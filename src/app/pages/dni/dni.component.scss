@@ -112,7 +112,7 @@ ul.links {
       animation: infinite resplandorAnimation 2s;
     }
     ::ng-deep .camera-switch {
-      display: hidden;
+      visibility: hidden;
     }
 
     @keyframes resplandorAnimation {
