@@ -48,7 +48,7 @@ export class FaceApiComponent implements OnInit {
   ngOnInit() {
     this.stepSelect = this.steps.INIT;
     this.width = window.innerWidth;
-    this.heigth = window.innerHeight;
+    // this.heigth = window.innerHeight;
     this.initVideo();
   }
 
