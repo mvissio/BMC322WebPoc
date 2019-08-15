@@ -107,7 +107,7 @@ ul.links {
       height: 100%;
     }
     ::ng-deep .webcam-wrapper {
-      border-style: solid dashed solid double;
+      border-style: solid solid double;
       border-color: green;
       border-width: thick;
 
@@ -140,7 +140,7 @@ ul.links {
       margin-top: 0.5rem;
       padding: 63px 11px 35px 13px;
       position: absolute;
-      top: 0;
+      top: 1rem;
       width: 36px;
       writing-mode: vertical-rl;
     }
@@ -246,4 +246,63 @@ video {
   position: absolute;
   top: 19px;
   width: 19px;
+}
+.countdown:before {
+  content: '321';
+
+  font-family: monospace;
+  font-size: 4rem;
+  display: inline-block;
+  position: absolute;
+  top: 3rem;
+  left: 15rem;
+  width: 1ch;
+  overflow: hidden;
+
+  -webkit-animation: countdowns 3s steps(3);
+  -moz-animation: countdowns 3s steps(3);
+  -ms-animation: countdowns 3s steps(3);
+  -o-animation: countdowns 3s steps(3);
+  animation: countdowns 3s steps(3);
+}
+
+@-webkit-keyframes countdowns {
+  0% {
+    text-indent: 0;
+  }
+  100% {
+    text-indent: -3ch;
+  }
+}
+@-moz-keyframes countdowns {
+  0% {
+    text-indent: 0;
+  }
+  100% {
+    text-indent: -3ch;
+  }
+}
+@-ms-keyframes countdowns {
+  0% {
+    text-indent: 0;
+  }
+  100% {
+    text-indent: -3ch;
+  }
+}
+@-o-keyframes countdowns {
+  0% {
+    text-indent: 0;
+  }
+  100% {
+    text-indent: -3ch;
+  }
+}
+@keyframes countdowns {
+  0% {
+    text-indent: 0;
+  }
+  100% {
+    text-indent: -3ch;
+  }
 }
