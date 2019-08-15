@@ -1,5 +1,5 @@
 <div id="content-wrapper">
-  <div id="capture-screen">
+  <div id="capture-screen" *ngIf="!webcamImageFView && !errorMessage">
     <webcam
       [height]="300"
       [width]="width"
@@ -27,7 +27,7 @@
       </div>
     </div>
   </div>
-  <div id="message" *ngIf="webcamImageFView && !errorMessage">
+  <div id="message" *ngIf="webcamImageFView">
     <div id="result-screen">
       <div id="back2"></div>
       <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
@@ -43,7 +43,7 @@
           de tu DNI.
         </div>
       </div>
-      <div class="button-content" *ngIf="imgDNIDorso">
+      <div class="button-content" *ngIf="imgDNI">
         <button
           class="button"
           type="button"
@@ -61,5 +61,15 @@
     *ngIf="errorMessage"
   >
     {{ errorMessage }}
+  </div>
+  <div class="button-content" *ngIf="errorMessage">
+    <button
+      class="button"
+      type="button"
+      value="INTENTAR NUEVAMENTE"
+      (click)="goBack($event)"
+    >
+      INTENTAR NEUVAMENTE
+    </button>
   </div>
 </div>

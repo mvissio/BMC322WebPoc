@@ -82,13 +82,13 @@ export class DniComponent implements OnInit {
     this.webcamImageFView = false;
     this.errorMessage = undefined;
     if (this.legend1) {
+      localStorage.setItem('imgDNI', this.webcamImageF.imageAsDataUrl);
       this.imgDNI = this.webcamImageF.imageAsDataUrl;
       this.detecDocument(this.imgDNI);
     } else {
       localStorage.setItem('imgDNIDorso', this.webcamImageF.imageAsDataUrl);
       this.imgDNIDorso = this.webcamImageF.imageAsDataUrl;
       this.detecDocument(this.imgDNIDorso);
-      console.log('detecto documento?', this.detecto);
     }
     if (this.imgDNI && this.imgDNIDorso) {
       this.pictureTaken.emit(webcamImage);
@@ -115,7 +115,6 @@ export class DniComponent implements OnInit {
         ) {
           this.detecto = true;
           this.legend1 = false;
-          localStorage.setItem('imgDNI', this.webcamImageF.imageAsDataUrl);
           this.errorMessage = undefined;
           this.webcamImageFView = true;
         } else {
@@ -128,15 +127,26 @@ export class DniComponent implements OnInit {
       .add(() => detecDocumentSub.unsubscribe());
   }
   public goToNext() {
-    if (!this.codeReaded) {
-      this.getReadCodeBar(this.imgDNI, 1);
+    if (!this.imgDNIDorso) {
+      this.legend1 = false;
+      this.detecto = false;
+      this.webcamImageFView = false;
+    } else {
+      if (!this.codeReaded) {
+        this.getReadCodeBar(this.imgDNI, 1);
+      }
+      if (!this.codeReaded) {
+        this.getReadCodeBar(this.imgDNIDorso, 2);
+      }
+      if (!this.codeReaded) {
+        localStorage.setItem('resultDNI', 'no se leyó el código de barra');
+      }
     }
-    if (!this.codeReaded) {
-      this.getReadCodeBar(this.imgDNIDorso, 2);
-    }
-    if (!this.codeReaded) {
-      localStorage.setItem('resultDNI', 'no se leyó el código de barra');
-    }
+  }
+  public goBack() {
+    this.detecto = false;
+    this.errorMessage = undefined;
+    this.webcamImageFView = false;
   }
   public goToNextDorso() {
     if (!this.codeReaded) {
