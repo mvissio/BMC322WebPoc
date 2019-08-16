@@ -23,6 +23,7 @@ export class SelfieComponent implements OnInit {
   public width: any;
   public heith: any;
   results = '';
+  errorMessage = '';
   reader;
   constructor(
     private router: Router,
@@ -59,23 +60,29 @@ export class SelfieComponent implements OnInit {
     const dni = localStorage.getItem('number');
     const gender = localStorage.getItem('gender');
     if (dni && selfie && gender) {
-
       // TODO: para cuando ande todo
       this.commonsService.getRenaperFace(dni, gender, selfie).subscribe(res => {
-        localStorage.setItem('resultFace', JSON.stringify(res));
+        if (Object.keys(res).length > 2) {
+          //matchThreshold
+          // =2 {code: 2030, message: "Login fail"}
+          localStorage.setItem('resultFace', JSON.stringify(res));
+        } else {
+          this.errorMessage =
+            'No pudimos validar los datos de Cara para validar contra renaper';
+        }
         console.log('resultado del servicio FACE:', res);
-        this.router.navigate(['result']);
       });
-      console.log('mockeamos llamada a renaper para cara');
-
-      this.router.navigate(['result']);
     } else {
+      this.errorMessage =
+        'No existen los datos de Cara para validar contra renaper';
       console.log('No existen los datos de Cara para validar contra renaper');
-      localStorage.setItem(
-        'resultFace',
-        'No existen los datos de Cara para validar contra renaper'
-      );
-      this.router.navigate(['result']);
     }
+  }
+  goBack(event) {
+    this.errorMessage = '';
+    this.webcamImageF = false;
+  }
+  goToNext() {
+    this.router.navigate(['result']);
   }
 }
