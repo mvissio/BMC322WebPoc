@@ -1,11 +1,15 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
-import {WebcamImage, WebcamInitError} from 'ngx-webcam';
-import {Subject, Observable} from 'rxjs';
-import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
-import {CommonsService} from 'src/app/services/commons.service';
-import {IAwsResponse} from '../../inteface/model.inteface';
-import {CONST_AWS} from '../../const/const';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { WebcamImage, WebcamInitError } from 'ngx-webcam';
+import { Subject, Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { CommonsService } from 'src/app/services/commons.service';
+import {
+  IAwsResponse,
+  PersonRenaper,
+  ResponseRenaper
+} from '../../inteface/model.inteface';
+import { CONST_AWS } from '../../const/const';
 
 const dbr = (window as any).dbr;
 
@@ -40,16 +44,20 @@ export class DniComponent implements OnInit {
   showImage: boolean;
   showErrorCodebar: boolean;
   loading: boolean;
+  resultOk: boolean;
+  content: ResponseRenaper;
+  person: PersonRenaper;
   private trigger: Subject<void> = new Subject<void>();
   public videoOptions: MediaTrackConstraints = {};
-  private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
+  private nextWebcam: Subject<boolean | string> = new Subject<
+    boolean | string
+  >();
 
   constructor(
     private router: Router,
     private http: HttpClient,
     private commonsService: CommonsService
-  ) {
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.width = window.innerWidth;
@@ -58,6 +66,7 @@ export class DniComponent implements OnInit {
     this.showImage = false;
     this.showErrorCodebar = false;
     this.loading = false;
+    this.resultOk = false;
     dbr.licenseKey =
       't0068NQAAACLXANtkbkqiXyqxKLgs4E96lS/m0s/4I3VNy1EhUBcqD84+8iWXS9CbBmmp3+qSxewQfSLBmPTiimqF1MEjhr8=';
     // localStorage.clear();
@@ -96,7 +105,6 @@ export class DniComponent implements OnInit {
   }
 
   public handleImage(webcamImage: WebcamImage): void {
-
     this.webcamImageF = webcamImage;
     this.errorMessage = undefined;
     if (this.legend1) {
@@ -136,31 +144,34 @@ export class DniComponent implements OnInit {
           this.showImage = true;
         } else {
           this.detecto = false;
-          this.errorMessage = 'No se detecto ningun documento. Por favor intente de nuevo.';
+          this.errorMessage =
+            'No se detecto ningun documento. Por favor intente de nuevo.';
         }
       })
       .add(() => detecDocumentSub.unsubscribe());
   }
 
-  public async goToNext() {
+  async goToNext() {
     if (this.legend1) {
       this.legend1 = false;
       this.detecto = false;
       this.showCamera = true;
       this.showImage = false;
     } else {
-      if (!this.codeReaded) {
-        await this.getReadCodeBar(this.imgDNI, 1);
-      }
-      if (!this.codeReaded) {
-        await this.getReadCodeBar(this.imgDNIDorso, 2);
-      }
-      if (!this.codeReaded) {
-        this.showCamera = false;
-        this.showImage = false;
-        this.errorMessage = undefined;
-        this.showErrorCodebar = true;
-      }
+      const prom1 = await this.getReadCodeBar(localStorage.getItem('imgDNI'));
+      const prom2 = await this.getReadCodeBar(
+        localStorage.getItem('imgDNIDorso')
+      );
+      Promise.all([prom1, prom2]).then(value => {
+        if (!this.codeReaded) {
+          this.showCamera = false;
+          this.showImage = false;
+          this.errorMessage = undefined;
+          this.showErrorCodebar = true;
+        } else {
+          this.goToResult();
+        }
+      });
     }
   }
 
@@ -174,67 +185,64 @@ export class DniComponent implements OnInit {
     this.showErrorCodebar = false;
   }
 
-  public goToNextDorso() {
-    if (!this.codeReaded) {
-      this.getReadCodeBar(this.imgDNIDorso, 2);
-    }
+  public goToResult() {
+    const result = localStorage.getItem('resultDNI');
+    this.content = JSON.parse(result);
+    this.person = JSON.parse(this.content.person);
+    this.resultOk = true;
   }
 
-  public goToResult() {
+  goToFaceApi() {
     this.router.navigate(['faceapi']);
   }
 
-  getReadCodeBar(imgToRead, order) {
-    new Promise((resolve, reject) => {
-      dbr
-        .createInstance()
-        .then(reader => reader.decode(imgToRead))
-        .then(r => {
-            if (r.length > 0) {
-              const rr = r[0];
-              const strMsg = rr.BarcodeText;
-              const codigo = strMsg.split('@');
-              if (codigo.length > 0) {
-                // dni nuevo
-                let tramite = codigo[0].trim();
-                let dni = codigo[4].trim();
-                let sexo = codigo[3].trim();
-                // dni viejo
-                if (codigo.length > 10) {
-                  tramite = codigo[10].trim();
-                  dni = codigo[1].trim();
-                  sexo = codigo[8].trim();
-                }
-                localStorage.setItem('number', dni);
-                localStorage.setItem('gender', sexo);
-                if (dni && sexo && tramite) {
-                  this.subscribePerson = this.commonsService
-                    .getRenaperPerson(dni, sexo, tramite)
-                    .subscribe(
-                      res => {
-                        localStorage.setItem('resultDNI', JSON.stringify(res));
-                        console.log('resultado del servicio DNI:', res);
-                        this.codeReaded = true;
-                        resolve();
-                      },
-                      error => {
-                        this.showErrorCodebar = true;
-                        this.loading = false;
-                        this.showCamera = false;
-                        this.showImage = false;
-                      }
-                    ).add(() => this.subscribePerson.unsubscribe());
-                } else {
-                  reject();
-                }
-              } else {
-                reject();
-              }
-            } else {
-              reject();
+  getReadCodeBar(imgToRead) {
+    return dbr
+      .createInstance()
+      .then(reader => reader.decode(imgToRead))
+      .then(r => {
+        console.log(r);
+        if (r.length > 0) {
+          const rr = r[0];
+          const strMsg = rr.BarcodeText;
+          const codigo = strMsg.split('@');
+          // length=9 00384052743@CORTEZ LO DUCA@AGOSTINA@F@54692573@A@12/06/2015@06/07/2015@276
+          // length=17  @25984618    @A@1@LO DUCA@NATALIA GEORGINA@ARGENTINA@18/06/1977@F@04/01/2012@00087712904@7013 @04/01/2027@61@0@ILR:2.20 C:110927.01 (GM/EXE-MOVE-HM)@UNIDAD #13 || S/N: 0040>2008>>0010
+          if (codigo.length > 0) {
+            // dni nuevo
+            let tramite = codigo[0].trim();
+            let dni = codigo[4].trim();
+            let sexo = codigo[3].trim();
+            // dni viejo
+            if (codigo.length > 10) {
+              tramite = codigo[10].trim();
+              dni = codigo[1].trim();
+              sexo = codigo[8].trim();
             }
+            localStorage.setItem('number', dni);
+            localStorage.setItem('gender', sexo);
+            if (dni && sexo && tramite) {
+              this.subscribePerson = this.commonsService
+                .getRenaperPerson(dni, sexo, tramite)
+                .subscribe(
+                  res => {
+                    localStorage.setItem('resultDNI', JSON.stringify(res));
+                    console.log('resultado del servicio DNI:', res);
+                    this.codeReaded = true;
+                  },
+                  error => {
+                    this.showErrorCodebar = true;
+                    this.loading = false;
+                    this.showCamera = false;
+                    this.showImage = false;
+                  }
+                )
+                .add(() => this.subscribePerson.unsubscribe());
+            }
+          } else {
+            return;
           }
-        );
-    }).then(console.info);
+        }
+      });
   }
 }
