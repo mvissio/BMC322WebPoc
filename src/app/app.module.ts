@@ -14,11 +14,9 @@ import { WebcamModule } from 'ngx-webcam';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonsService } from './services/commons.service';
 import { FormsModule } from '@angular/forms';
-import { ScannerComponent } from './pages/scanner/scanner.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: 'scanner', component: ScannerComponent },
   { path: 'open', component: OpenComponent },
   { path: 'selfie', component: SelfieComponent },
   { path: 'dni', component: DniComponent },
@@ -40,8 +38,7 @@ const openCVConfig: OpenCVOptions = {
     OpenComponent,
     FaceApiComponent,
     DniComponent,
-    SelfieComponent,
-    ScannerComponent
+    SelfieComponent
   ],
   imports: [
     BrowserModule,

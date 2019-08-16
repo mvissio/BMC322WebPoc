@@ -1,9 +1,10 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
-import { WebcamImage, WebcamInitError } from 'ngx-webcam';
-import { Observable, Subject } from 'rxjs';
-import { Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
-import { CommonsService } from 'src/app/services/commons.service';
+import {Component, EventEmitter, OnInit} from '@angular/core';
+import {WebcamImage, WebcamInitError} from 'ngx-webcam';
+import {Observable, Subject, timer} from 'rxjs';
+import {Router} from '@angular/router';
+import {DomSanitizer} from '@angular/platform-browser';
+import {CommonsService} from 'src/app/services/commons.service';
+
 // import * as base64Img from 'base64-img';
 
 @Component({
@@ -24,12 +25,16 @@ export class SelfieComponent implements OnInit {
   public heith: any;
   results = '';
   reader;
+
   constructor(
     private router: Router,
     private sanitizer: DomSanitizer,
     private commonsService: CommonsService
-  ) {}
+  ) {
+  }
+
   private trigger: Subject<void> = new Subject<void>();
+
   ngOnInit() {
     this.width = window.innerWidth;
   }
@@ -49,32 +54,24 @@ export class SelfieComponent implements OnInit {
   public handleInitError(error: WebcamInitError): void {
     this.errors.push(error);
   }
+
   public handleImage(webcamImage: WebcamImage): void {
     this.webcamImageF = webcamImage;
     localStorage.setItem('Selfie', this.webcamImageF.imageAsDataUrl);
     this.validarRenaper();
   }
+
   validarRenaper() {
     const selfie = localStorage.getItem('Selfie');
     const dni = localStorage.getItem('number');
     const gender = localStorage.getItem('gender');
     if (dni && selfie && gender) {
-
-      // TODO: para cuando ande todo
       this.commonsService.getRenaperFace(dni, gender, selfie).subscribe(res => {
         localStorage.setItem('resultFace', JSON.stringify(res));
-        console.log('resultado del servicio FACE:', res);
-        this.router.navigate(['result']);
+        setTimeout(() => this.router.navigate(['result']), 3000);
       });
-      console.log('mockeamos llamada a renaper para cara');
-
       this.router.navigate(['result']);
     } else {
-      console.log('No existen los datos de Cara para validar contra renaper');
-      localStorage.setItem(
-        'resultFace',
-        'No existen los datos de Cara para validar contra renaper'
-      );
       this.router.navigate(['result']);
     }
   }

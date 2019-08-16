@@ -19,22 +19,14 @@ export class FaceApiComponent implements OnInit {
       state: 'init',
       message: 'Espere unos segundos, por favor'
     },
-    /*SERIUS: {
-      state: 'serius',
-      message: 'Mantenga la seriedad, por favor'
-    },*/
     HAPPY: {
       state: 'happy',
-      message: 'Mantenga una sonrisa, por favor'
+      message: 'Mantenga una expresión sonrisa, por favor'
     },
     ANGRY: {
       state: 'angry',
-      message: 'Mantenga un enojo, por favor'
+      message: 'Mantenga una expresión de enojo, por favor'
     },
-    /*SURPRISED: {
-      state: 'surprised',
-      message: 'Abra la boca , por favor'
-    },*/
     FINISH: {
       state: 'finish',
       message: 'Muchas gracias'
@@ -53,20 +45,16 @@ export class FaceApiComponent implements OnInit {
 
   initVideo() {
     this.video = document.getElementById('video');
-    console.log('facepi video=', this.video);
     Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri(URI),
       faceapi.nets.faceLandmark68Net.loadFromUri(URI),
       faceapi.nets.faceRecognitionNet.loadFromUri(URI),
       faceapi.nets.faceExpressionNet.loadFromUri(URI)
     ]).then(dta => {
-      console.log('facepi dta=', dta);
       this.startVideo();
     }).then(() => {
       this.video.addEventListener('play', () => {
-        console.log('faceapi video addeventlistener video=', this.video);
         const canvas = faceapi.createCanvasFromMedia(this.video);
-        console.log('faceapi video addeventlistener canvas=', canvas);
         canvas.style.position = 'absolute';
         document.getElementById('canv-content').append(canvas);
         const displaySize = {
@@ -105,20 +93,13 @@ export class FaceApiComponent implements OnInit {
 
   moreExpresion(resizedDetections) {
     let pass = false;
-    console.log('estado animo=', resizedDetections.expressions);
     switch (this.stepSelect.state) {
-      /*case this.steps.SERIUS.state:
-        pass = this.matchParameter(resizedDetections.expressions.neutral);
-        break;*/
       case this.steps.HAPPY.state:
         pass = this.matchParameter(resizedDetections.expressions.happy);
         break;
       case this.steps.ANGRY.state:
         pass = this.matchParameter(resizedDetections.expressions.angry);
         break;
-      /*case this.steps.SURPRISED.state:
-        pass = this.matchParameter(resizedDetections.expressions.surprised);
-        break;*/
     }
     if (pass) {
       this.nextStep();
@@ -126,7 +107,7 @@ export class FaceApiComponent implements OnInit {
   }
 
   matchParameter(param) {
-    return 0.5 < param;
+    return 0.6 < param;
   }
 
   nextStep() {
@@ -134,21 +115,12 @@ export class FaceApiComponent implements OnInit {
       case this.steps.HAPPY.state:
         this.stepSelect = this.steps.ANGRY;
         break;
-      /* case this.steps.SERIUS.state:
-        this.stepSelect = this.steps.ANGRY;
-        break;*/
       case this.steps.ANGRY.state:
         this.stepSelect = this.steps.FINISH;
         timer(3000)
           .toPromise()
           .then(() => this.router.navigate(['/selfie']));
         break;
-      /*case this.steps.SURPRISED.state:
-        this.stepSelect = this.steps.FINISH;
-        timer(3000)
-          .toPromise()
-          .then(() => this.router.navigate(['/selfie']));
-        break;*/
     }
   }
 
