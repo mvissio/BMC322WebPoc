@@ -214,14 +214,10 @@ export class DniComponent implements OnInit {
           const rr = r[0];
           const strMsg = rr.BarcodeText;
           const codigo = strMsg.split('@');
-          // length=9 00384052743@CORTEZ LO DUCA@AGOSTINA@F@54692573@A@12/06/2015@06/07/2015@276
-          // length=17  @25984618    @A@1@LO DUCA@NATALIA GEORGINA@ARGENTINA@18/06/1977@F@04/01/2012@00087712904@7013 @04/01/2027@61@0@ILR:2.20 C:110927.01 (GM/EXE-MOVE-HM)@UNIDAD #13 || S/N: 0040>2008>>0010
           if (codigo.length > 0) {
-            // dni nuevo
             let tramite = codigo[0].trim();
             let dni = codigo[4].trim();
             let sexo = codigo[3].trim();
-            // dni viejo
             if (codigo.length > 10) {
               tramite = codigo[10].trim();
               dni = codigo[1].trim();
@@ -235,7 +231,6 @@ export class DniComponent implements OnInit {
                 .subscribe(
                   res => {
                     localStorage.setItem('resultDNI', JSON.stringify(res));
-                    console.log('resultado del servicio DNI:', res);
                     this.codeReaded = true;
                   },
                   error => {
