@@ -1,5 +1,5 @@
-<div class="content">
-  <div class="tocapture">
+<div id="content-wrapper">
+  <div class="tocapture" *ngIf="!webcamImageF">
     <webcam
       [height]="width"
       [width]="width"
@@ -20,15 +20,46 @@
       </div>
     </div>
   </div>
-  <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
-    <img
-      class="capturedImg"
-      [width]="width"
-      [src]="webcamImageF.imageAsDataUrl"
-    />
-    <div class="lower-panel">
-      <div id="checked"></div>
+  <div id="result-screen" *ngIf="webcamImageF && !errorMessage">
+    <div id="back2"></div>
+    <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
+      <img id="result-image" [src]="webcamImageF.imageAsDataUrl" />
       <div class="title">¡Listo!</div>
+      <div id="checked"></div>
     </div>
+    <div class="lower-panel">
+      <button
+        class="button"
+        type="button"
+        value="CONTINUAR"
+        (click)="goToNext($event)"
+      >
+        CONTINUAR
+      </button>
+    </div>
+  </div>
+  <div class="button-content" *ngIf="errorMessage">
+    <div class="container mb-5">
+      <div class="card">
+        <div class="card-header">
+          <span>Disculpe</span>
+        </div>
+        <div class="card-body">
+          <span
+            >No pudimos validar los datos de la cara, por favor intentelo
+            nuevamente</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <button
+      class="button"
+      type="button"
+      value="INTENTAR NUEVAMENTE"
+      (click)="goBack($event)"
+    >
+      INTENTAR NEUVAMENTE
+    </button>
   </div>
 </div>
