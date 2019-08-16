@@ -126,6 +126,15 @@ ul.links {
     width: 90%;
     padding: 12px 0;
     cursor: pointer;
+    &:disabled {
+      background-color: #D1D1D1;
+    }
+    &:hover {
+      background-color: #FF710F;
+    }
+    &:focus {
+      background-color: #e88300;
+    }
   }
 }
 
@@ -209,4 +218,3 @@ video {
   }
 }
 
-  

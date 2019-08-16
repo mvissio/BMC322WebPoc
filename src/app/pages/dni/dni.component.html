@@ -1,19 +1,9 @@
 <div id="content-wrapper">
-  <div id="capture-screen" *ngIf="!webcamImageFView && !errorMessage">
-    <webcam
-      [height]="300"
-      [width]="width"
-      class="fa-rotate-90"
-      [imageType]="imageType"
-      [trigger]="triggerObservable"
-      (imageCapture)="handleImage($event)"
-      *ngIf="showWebcam"
-      [allowCameraSwitch]="allowCameraSwitch"
-      [switchCamera]="nextWebcamObservable"
-      [videoOptions]="videoOptions"
-      (cameraSwitched)="cameraWasSwitched($event)"
-      (initError)="handleInitError($event)"
-    ></webcam>
+  <div id="capture-screen" *ngIf="showCamera">
+    <webcam [height]="300" [width]="width" class="fa-rotate-90" [imageType]="imageType" [trigger]="triggerObservable"
+            (imageCapture)="handleImage($event)" *ngIf="showWebcam" [allowCameraSwitch]="allowCameraSwitch"
+            [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions"
+            (cameraSwitched)="cameraWasSwitched($event)" (initError)="handleInitError($event)"></webcam>
     <div id="legend1" *ngIf="legend1" class="legend">
       Ubicá el FRENTE de tu DNI en el recuadro
       <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
@@ -26,49 +16,47 @@
         📸
       </div>
     </div>
+    <div
+      id="errorMessage" class="alert-info text-center text-capitalize" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
   </div>
-  <div id="message" *ngIf="webcamImageFView">
+  <div class="flex-column" *ngIf="loading"><img src="assets/img/Spinner-1s-200px.svg"></div>
+  <div id="message" *ngIf="showImage">
     <div id="result-screen">
       <div id="back2"></div>
       <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
-        <img [width]="width" [src]="webcamImageF.imageAsDataUrl" />
+        <img [width]="width" [src]="webcamImageF.imageAsDataUrl"/>
       </div>
       <div class="lower-panel">
         <div id="checked"></div>
         <div class="title">¡Listo!</div>
         <div class="subtitle" *ngIf="!imgDNIDorso">
-          Ahora continuaremos con el<br /><span id="bold">{{
-            !legend1 ? 'dorso' : ''
-          }}</span>
+          Ahora continuaremos con el<br/><span id="bold">{{!legend1 ? 'dorso' : ''          }}</span>
           de tu DNI.
         </div>
       </div>
-      <div class="button-content" *ngIf="imgDNI">
+      <div class="button-content">
         <button
-          class="button"
-          type="button"
-          value="CONTINUAR"
-          (click)="goToNext($event)"
-        >
+          class="button" type="button" value="CONTINUAR" (click)="goToNext($event)">
           CONTINUAR
         </button>
       </div>
     </div>
   </div>
-  <div
-    id="errorMessage"
-    class="alert-info text-center text-capitalize"
-    *ngIf="errorMessage"
-  >
-    {{ errorMessage }}
-  </div>
-  <div class="button-content" *ngIf="errorMessage">
-    <button
-      class="button"
-      type="button"
-      value="INTENTAR NUEVAMENTE"
-      (click)="goBack($event)"
-    >
+  <div class="button-content" *ngIf="showErrorCodebar">
+    <div class="container mb-5">
+      <div class="card">
+      <div class="card-header">
+        <span>Disculpe</span>
+      </div>
+        <div class="card-body">
+        <span>No pudimos validar los datos del documento, por favor intentelo nuevamente</span>
+      </div>
+      </div>
+    </div>
+
+    <button class="button" type="button" value="INTENTAR NUEVAMENTE" (click)="goBack($event)">
       INTENTAR NEUVAMENTE
     </button>
   </div>

@@ -1,12 +1,14 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { WebcamImage, WebcamInitError } from 'ngx-webcam';
-import { Subject, Observable } from 'rxjs';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { CommonsService } from 'src/app/services/commons.service';
-import { IAwsResponse } from '../../inteface/model.inteface';
-import { CONST_AWS } from '../../const/const';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {WebcamImage, WebcamInitError} from 'ngx-webcam';
+import {Subject, Observable} from 'rxjs';
+import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {CommonsService} from 'src/app/services/commons.service';
+import {IAwsResponse} from '../../inteface/model.inteface';
+import {CONST_AWS} from '../../const/const';
+
 const dbr = (window as any).dbr;
+
 @Component({
   selector: 'app-dni',
   templateUrl: './dni.component.html',
@@ -34,66 +36,81 @@ export class DniComponent implements OnInit {
   imageType = 'image/jpeg';
   subscribePerson: any;
   errorMessage: string;
+  showCamera: boolean;
+  showImage: boolean;
+  showErrorCodebar: boolean;
+  loading: boolean;
   private trigger: Subject<void> = new Subject<void>();
   public videoOptions: MediaTrackConstraints = {};
-  private nextWebcam: Subject<boolean | string> = new Subject<
-    boolean | string
-  >();
+  private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
+
   constructor(
     private router: Router,
     private http: HttpClient,
     private commonsService: CommonsService
-  ) {}
+  ) {
+  }
+
   public ngOnInit(): void {
     this.width = window.innerWidth;
     this.heith = window.innerHeight;
+    this.showCamera = true;
+    this.showImage = false;
+    this.showErrorCodebar = false;
+    this.loading = false;
+    dbr.licenseKey =
+      't0068NQAAACLXANtkbkqiXyqxKLgs4E96lS/m0s/4I3VNy1EhUBcqD84+8iWXS9CbBmmp3+qSxewQfSLBmPTiimqF1MEjhr8=';
     // localStorage.clear();
   }
+
   public triggerSnapshot(): void {
     this.trigger.next();
   }
+
   public get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();
   }
+
   public toggleWebcam(): void {
     this.showWebcam = !this.showWebcam;
   }
+
   public handleInitError(error: WebcamInitError): void {
     this.errors.push(error);
   }
+
   public showNextWebcam(directionOrDeviceId: boolean | string): void {
     this.nextWebcam.next(directionOrDeviceId);
   }
+
   public cameraWasSwitched(deviceId: string): void {
-    console.log('active device: ' + deviceId);
     this.deviceId = deviceId;
     if (!this.switched) {
       this.switched = true;
       this.showNextWebcam(false);
     }
   }
+
   public get nextWebcamObservable(): Observable<boolean | string> {
     return this.nextWebcam.asObservable();
   }
+
   public handleImage(webcamImage: WebcamImage): void {
-    dbr.licenseKey =
-      't0068NQAAACLXANtkbkqiXyqxKLgs4E96lS/m0s/4I3VNy1EhUBcqD84+8iWXS9CbBmmp3+qSxewQfSLBmPTiimqF1MEjhr8=';
+
     this.webcamImageF = webcamImage;
-    this.webcamImageFView = false;
     this.errorMessage = undefined;
     if (this.legend1) {
       localStorage.setItem('imgDNI', this.webcamImageF.imageAsDataUrl);
-      this.imgDNI = this.webcamImageF.imageAsDataUrl;
-      this.detecDocument(this.imgDNI);
+      this.detecDocument(this.webcamImageF.imageAsDataUrl);
     } else {
       localStorage.setItem('imgDNIDorso', this.webcamImageF.imageAsDataUrl);
-      this.imgDNIDorso = this.webcamImageF.imageAsDataUrl;
-      this.detecDocument(this.imgDNIDorso);
+      this.detecDocument(this.webcamImageF.imageAsDataUrl);
     }
     if (this.imgDNI && this.imgDNIDorso) {
       this.pictureTaken.emit(webcamImage);
     }
   }
+
   detecDocument(img) {
     const detecDocumentSub = this.commonsService
       .detectDocument(img)
@@ -114,54 +131,64 @@ export class DniComponent implements OnInit {
             license.Confidence >= 70)
         ) {
           this.detecto = true;
-          this.legend1 = false;
           this.errorMessage = undefined;
-          this.webcamImageFView = true;
+          this.showCamera = false;
+          this.showImage = true;
         } else {
           this.detecto = false;
-          this.errorMessage = 'No se detecto ningun documento';
-          this.webcamImageFView = false;
+          this.errorMessage = 'No se detecto ningun documento. Por favor intente de nuevo.';
         }
-        console.log('detecto documento?', this.detecto);
       })
       .add(() => detecDocumentSub.unsubscribe());
   }
-  public goToNext() {
-    if (!this.imgDNIDorso) {
+
+  public async goToNext() {
+    if (this.legend1) {
       this.legend1 = false;
       this.detecto = false;
-      this.webcamImageFView = false;
+      this.showCamera = true;
+      this.showImage = false;
     } else {
       if (!this.codeReaded) {
-        this.getReadCodeBar(this.imgDNI, 1);
+        await this.getReadCodeBar(this.imgDNI, 1);
       }
       if (!this.codeReaded) {
-        this.getReadCodeBar(this.imgDNIDorso, 2);
+        await this.getReadCodeBar(this.imgDNIDorso, 2);
       }
       if (!this.codeReaded) {
-        localStorage.setItem('resultDNI', 'no se leyó el código de barra');
+        this.showCamera = false;
+        this.showImage = false;
+        this.errorMessage = undefined;
+        this.showErrorCodebar = true;
       }
     }
   }
-  public goBack() {
+
+  public goBack(event) {
     this.detecto = false;
+    this.loading = false;
     this.errorMessage = undefined;
-    this.webcamImageFView = false;
+    this.showImage = false;
+    this.showCamera = true;
+    this.legend1 = true;
+    this.showErrorCodebar = false;
   }
+
   public goToNextDorso() {
     if (!this.codeReaded) {
       this.getReadCodeBar(this.imgDNIDorso, 2);
     }
   }
+
   public goToResult() {
     this.router.navigate(['faceapi']);
   }
+
   getReadCodeBar(imgToRead, order) {
     dbr
       .createInstance()
       .then(reader => reader.decode(imgToRead))
-      .then(async r => {
-        // si encontró un código de barra
+      .then(r => {
         if (r.length > 0) {
           const rr = r[0];
           const strMsg = rr.BarcodeText;
@@ -188,63 +215,21 @@ export class DniComponent implements OnInit {
                   res => {
                     localStorage.setItem('resultDNI', JSON.stringify(res));
                     console.log('resultado del servicio DNI:', res);
-                    this.subscribePerson.unsubscribe();
                     this.codeReaded = true;
                   },
-                  () => {
-                    console.log('process0');
-                    this.goToResult();
+                  error => {
+                    this.showErrorCodebar = true;
+                    this.loading = false;
+                    this.showCamera = false;
+                    this.showImage = false;
                   }
-                );
-            } else {
-              console.log('process1');
-              this.nextProcess(order);
+                ).add(() => this.subscribePerson.unsubscribe());
             }
-          } else {
-            console.log('process2');
-            this.nextProcess(order);
           }
-        } else {
-          // TODO: mockeamos datos
-          // console.log('mockeamos datos al no leer codigo de barra');
-          // localStorage.setItem(
-          //   'resultDNI',
-          //   JSON.stringify({
-          //     code: 10001,
-          //     message: 'Exito',
-          //     person: {
-          //       number: '25984618',
-          //       gender: 'F',
-          //       names: 'Natalia Georgina',
-          //       lastNames: 'LO DUCA',
-          //       birthdate: '18/06/1977',
-          //       copy: 'A',
-          //       expirationDate: '04/01/2027',
-          //       creationDate: '04/01/2012',
-          //       cuil: '27259846183',
-          //       streetAddress: 'CANGALLO',
-          //       numberStreet: '3011',
-          //       floor: null,
-          //       department: '28',
-          //       zipCode: '5521',
-          //       city: 'VILLA NUEVA',
-          //       municipality: 'GUAYMALLéN',
-          //       province: 'MENDOZA',
-          //       country: 'ARGENTINA',
-          //       messageOfDeath: 'Sin Aviso de Fallecimiento',
-          //       nationality: 'ARGENTINA',
-          //       countryBirth: 'ARGENTINA'
-          //     },
-          //     valid: 'Vigente'
-          //   })
-          // );
-          console.log('process3');
-          localStorage.setItem('number', '25984618');
-          localStorage.setItem('gender', 'F');
-          this.goToResult();
         }
       });
   }
+
   nextProcess(order) {
     if (order === 1) {
       this.goToNextDorso();
