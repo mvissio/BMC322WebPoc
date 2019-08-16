@@ -1,15 +1,15 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { WebcamImage, WebcamInitError } from 'ngx-webcam';
-import { Subject, Observable } from 'rxjs';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { CommonsService } from 'src/app/services/commons.service';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {WebcamImage, WebcamInitError} from 'ngx-webcam';
+import {Subject, Observable} from 'rxjs';
+import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {CommonsService} from 'src/app/services/commons.service';
 import {
   IAwsResponse,
   PersonRenaper,
   ResponseRenaper
 } from '../../inteface/model.inteface';
-import { CONST_AWS } from '../../const/const';
+import {CONST_AWS} from '../../const/const';
 
 const dbr = (window as any).dbr;
 
@@ -45,19 +45,19 @@ export class DniComponent implements OnInit {
   showErrorCodebar: boolean;
   loading: boolean;
   resultOk: boolean;
+  disabledBtn = false;
   content: ResponseRenaper;
   person: PersonRenaper;
   private trigger: Subject<void> = new Subject<void>();
   public videoOptions: MediaTrackConstraints = {};
-  private nextWebcam: Subject<boolean | string> = new Subject<
-    boolean | string
-  >();
+  private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
 
   constructor(
     private router: Router,
     private http: HttpClient,
     private commonsService: CommonsService
-  ) {}
+  ) {
+  }
 
   public ngOnInit(): void {
     this.width = window.innerWidth;
@@ -152,6 +152,7 @@ export class DniComponent implements OnInit {
   }
 
   async goToNext() {
+    this.disabledBtn = true;
     if (this.legend1) {
       this.legend1 = false;
       this.detecto = false;
@@ -166,7 +167,7 @@ export class DniComponent implements OnInit {
       this.showImage = false;
       this.showErrorCodebar = false;
       this.showCamera = false;
-      Promise.all([prom1, prom2]).then(value => {
+      Promise.all([prom1, prom2]).then(() => {
         setTimeout(() => {
           this.loading = false;
           if (!localStorage.getItem('imgDNIDorso')) {
@@ -178,7 +179,7 @@ export class DniComponent implements OnInit {
             this.goToResult();
           }
         }, 6000);
-      });
+      }).then(() => this.disabledBtn = true);
     }
   }
 

@@ -2,7 +2,7 @@
   <div id="capture-screen" *ngIf="showCamera">
     <webcam [height]="300" [width]="width" class="fa-rotate-90" [imageType]="imageType" [trigger]="triggerObservable"
             (imageCapture)="handleImage($event)" *ngIf="showWebcam" [allowCameraSwitch]="allowCameraSwitch"
-            [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions"
+            [switchCamera]="nextwebcamobservable" [videoOptions]="videoOptions"
             (cameraSwitched)="cameraWasSwitched($event)" (initError)="handleInitError($event)"></webcam>
     <div id="legend1" *ngIf="legend1" class="legend">
       Ubicá el FRENTE de tu DNI en el recuadro
@@ -16,12 +16,13 @@
         📸
       </div>
     </div>
-    <div
-      id="errorMessage" class="alert-info text-center text-capitalize" *ngIf="errorMessage">
+    <div id="errorMessage" class="alert-info text-center text-capitalize" *ngIf="errorMessage">
       {{ errorMessage }}
     </div>
   </div>
-  <div class="flex-column" *ngIf="loading"><img src="assets/img/Spinner-1s-200px.svg"></div>
+  <div class="flex-column" *ngIf="loading">
+    <img src="assets/img/Spinner-1s-200px.svg"/>
+  </div>
   <div id="message" *ngIf="showImage">
     <div id="result-screen">
       <div id="back2"></div>
@@ -32,13 +33,13 @@
         <div id="checked"></div>
         <div class="title">¡Listo!</div>
         <div class="subtitle" *ngIf="!legend1">
-          Ahora continuaremos con el<br/><span id="bold">{{legend1 ? 'dorso' : ''          }}</span>
-          de tu DNI.
+          Ahora continuaremos con el<br/><span id="bold">{{
+            legend1 ? 'dorso' : ''
+          }}</span> de tu DNI.
         </div>
       </div>
       <div class="button-content">
-        <button
-          class="button" type="button" value="CONTINUAR" (click)="goToNext($event)">
+        <button class="button" type="button" value="CONTINUAR" [disabled]="disabledBtn" (click)="goToNext()">
           CONTINUAR
         </button>
       </div>
@@ -47,16 +48,23 @@
   <div class="button-content" *ngIf="showErrorCodebar">
     <div class="container mb-5">
       <div class="card">
-      <div class="card-header">
-        <span>Disculpe</span>
-      </div>
+        <div class="card-header">
+          <span>Disculpe</span>
+        </div>
         <div class="card-body">
-        <span>No pudimos validar los datos del documento, por favor intentelo nuevamente</span>
-      </div>
+                    <span>No pudimos validar los datos del documento, por favor intentelo
+            nuevamente</span
+                    >
+        </div>
       </div>
     </div>
 
-    <button class="button" type="button" value="INTENTAR NUEVAMENTE" (click)="goBack($event)">
+    <button [disabled]="disabledBtn"
+      class="button"
+      type="button"
+      value="INTENTAR NUEVAMENTE"
+      (click)="goBack($event)"
+    >
       INTENTAR NEUVAMENTE
     </button>
   </div>
@@ -78,7 +86,12 @@
       </tbody>
     </table>
     <div class="button-content">
-      <button class="button" type="button" value="CONTINUAR" (click)="goToFaceApi()">
+      <button
+        class="button"
+        type="button"
+        value="CONTINUAR"
+        (click)="goToFaceApi()"
+      >
         CONTINUAR
       </button>
     </div>
