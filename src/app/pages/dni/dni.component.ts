@@ -67,9 +67,9 @@ export class DniComponent implements OnInit {
     this.showErrorCodebar = false;
     this.loading = false;
     this.resultOk = false;
+    localStorage.clear();
     dbr.licenseKey =
       't0068NQAAACLXANtkbkqiXyqxKLgs4E96lS/m0s/4I3VNy1EhUBcqD84+8iWXS9CbBmmp3+qSxewQfSLBmPTiimqF1MEjhr8=';
-    // localStorage.clear();
   }
 
   public triggerSnapshot(): void {
@@ -162,15 +162,22 @@ export class DniComponent implements OnInit {
       const prom2 = await this.getReadCodeBar(
         localStorage.getItem('imgDNIDorso')
       );
+      this.loading = true;
+      this.showImage = false;
+      this.showErrorCodebar = false;
+      this.showCamera = false;
       Promise.all([prom1, prom2]).then(value => {
-        if (!this.codeReaded) {
-          this.showCamera = false;
-          this.showImage = false;
-          this.errorMessage = undefined;
-          this.showErrorCodebar = true;
-        } else {
-          this.goToResult();
-        }
+        setTimeout(() => {
+          this.loading = false;
+          if (!localStorage.getItem('imgDNIDorso')) {
+            this.showCamera = false;
+            this.showImage = false;
+            this.errorMessage = undefined;
+            this.showErrorCodebar = true;
+          } else {
+            this.goToResult();
+          }
+        }, 6000);
       });
     }
   }
@@ -183,6 +190,7 @@ export class DniComponent implements OnInit {
     this.showCamera = true;
     this.legend1 = true;
     this.showErrorCodebar = false;
+    localStorage.clear();
   }
 
   public goToResult() {
