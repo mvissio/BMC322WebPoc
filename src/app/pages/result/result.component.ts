@@ -19,16 +19,6 @@ export class ResultComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    // this.content = {
-    //   code: 10001,
-    //   message: 'Exito',
-    //   person: {
-    //     number: '25984618',
-    //     gender: 'F',
-    //     countryBirth: 'ARGENTINA'
-    //   },
-    //   valid: 'Vigente'
-    // };
     const result = localStorage.getItem('resultDNI');
     this.selfieSRC = localStorage.getItem('Selfie');
     this.imgDNIDorsoSRC = localStorage.getItem('imgDNIDorso');
