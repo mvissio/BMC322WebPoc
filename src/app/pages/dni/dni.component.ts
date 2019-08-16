@@ -229,12 +229,4 @@ export class DniComponent implements OnInit {
         }
       });
   }
-
-  nextProcess(order) {
-    if (order === 1) {
-      this.goToNextDorso();
-    } else {
-      this.goToResult();
-    }
-  }
 }
