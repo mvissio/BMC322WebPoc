@@ -22,28 +22,19 @@
     </div>
   </div>
   <div class="flex-column" *ngIf="loading"><img src="assets/img/Spinner-1s-200px.svg"></div>
-  <div id="message" *ngIf="showImage">
-    <div id="result-screen">
-      <div id="back2"></div>
-      <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
-        <img [width]="width" [src]="webcamImageF.imageAsDataUrl"/>
-      </div>
-      <div class="lower-panel">
-        <div id="checked"></div>
-        <div class="title">¡Listo!</div>
-        <div class="subtitle" *ngIf="!legend1">
-          Ahora continuaremos con el<br/><span id="bold">{{legend1 ? 'dorso' : ''          }}</span>
-          de tu DNI.
-        </div>
-      </div>
-      <div class="button-content">
-        <button
-          class="button" type="button" value="CONTINUAR" (click)="goToNext($event)">
-          CONTINUAR
-        </button>
-      </div>
+  <div id="result-screen" *ngIf="showImage">
+    <div id="back2"></div>
+    <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
+      <img id="result-image" [src]="webcamImageF.imageAsDataUrl"/>
+      <div id="checked"></div>
+    </div>
+    <div class="lower-panel">
+      <div class="title">¡Listo!</div>
+      <div class="subtitle" [ngClass]="!legend1 ? 'hidden': ''">Ahora continuaremos con el<br/><span id="bold">dorso</span>de tu DNI.</div>
+      <button class="button" type="button" value="CONTINUAR" (click)="goToNext($event)">CONTINUAR</button>
     </div>
   </div>
+
   <div class="button-content" *ngIf="showErrorCodebar">
     <div class="container mb-5">
       <div class="card">
