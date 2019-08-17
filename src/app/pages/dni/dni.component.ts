@@ -167,6 +167,8 @@ export class DniComponent implements OnInit {
       this.detecto = false;
       this.showCamera = true;
       this.showImage = false;
+      this.switched = false;
+      this.showButtonAction = true;
     } else {
       const prom1 = await this.getReadCodeBar(localStorage.getItem('imgDNI'));
       const prom2 = await this.getReadCodeBar(
