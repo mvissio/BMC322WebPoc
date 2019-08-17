@@ -46,6 +46,7 @@ export class DniComponent implements OnInit {
   resultOk: boolean;
   content: ResponseRenaper;
   person: PersonRenaper;
+  showButtonAction: boolean;
   private trigger: Subject<void> = new Subject<void>();
   public videoOptions: MediaTrackConstraints = {};
   private nextWebcam: Subject<boolean | string> = new Subject<
@@ -66,6 +67,7 @@ export class DniComponent implements OnInit {
     this.errorMessage = '';
     this.loading = false;
     this.resultOk = false;
+    this.showButtonAction = true;
     dbr.licenseKey =
       't0068NQAAACLXANtkbkqiXyqxKLgs4E96lS/m0s/4I3VNy1EhUBcqD84+8iWXS9CbBmmp3+qSxewQfSLBmPTiimqF1MEjhr8=';
     // localStorage.clear();
@@ -104,6 +106,7 @@ export class DniComponent implements OnInit {
   }
 
   public handleImage(webcamImage: WebcamImage): void {
+    this.showButtonAction = false;
     this.webcamImageF = webcamImage;
     if (this.legend1) {
       localStorage.setItem('imgDNI', this.webcamImageF.imageAsDataUrl);
@@ -120,31 +123,41 @@ export class DniComponent implements OnInit {
   detecDocument(img) {
     const detecDocumentSub = this.commonsService
       .detectDocument(img)
-      .subscribe((res: Array<IAwsResponse>) => {
-        const idCards: IAwsResponse = res.find(
-          r => r.Name === CONST_AWS.ID_CARDS
-        );
-        /*const document: IAwsResponse = res.find(
+      .subscribe(
+        (res: Array<IAwsResponse>) => {
+          const idCards: IAwsResponse = res.find(
+            r => r.Name === CONST_AWS.ID_CARDS
+          );
+          /*const document: IAwsResponse = res.find(
           r => r.Name === CONST_AWS.DOCUMENT
         );
         const license: IAwsResponse = res.find(
           r => r.Name === CONST_AWS.LICENSE
         );*/
-        if (idCards && idCards.Confidence >= 70) {
-          this.detecto = true;
-          this.showCamera = false;
-          this.showImage = true;
-          this.errorMessage = '';
-          console.log('idCards=', idCards);
-        } else {
-          console.log('idCards error=', idCards);
+          if (idCards && idCards.Confidence >= 70) {
+            this.detecto = true;
+            this.showCamera = false;
+            this.showImage = true;
+            this.errorMessage = '';
+            this.showButtonAction = true;
+            console.log('idCards=', idCards);
+          } else {
+            console.log('idCards error=', idCards);
+            this.detecto = false;
+            this.showCamera = false;
+            this.showImage = false;
+            this.errorMessage =
+              'No se detectó ningún documento, por favor intentelo nuevamente';
+          }
+        },
+        err => {
           this.detecto = false;
           this.showCamera = false;
           this.showImage = false;
           this.errorMessage =
-            'No se detectó ningún documento, por favor intentelo nuevamente';
+            'Hubo un error en el servicio que detecta documento, por favor intentelo nuevamente';
         }
-      })
+      )
       .add(() => detecDocumentSub.unsubscribe());
   }
 
@@ -179,6 +192,8 @@ export class DniComponent implements OnInit {
     this.showCamera = true;
     this.legend1 = true;
     this.errorMessage = '';
+    this.switched = false;
+    this.showButtonAction = true;
   }
 
   public goToResult() {

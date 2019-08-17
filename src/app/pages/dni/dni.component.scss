@@ -21,14 +21,20 @@ ul.links {
 }
 
 #content-wrapper {
-  background-color: #ffffff; height: 100%; overflow: hidden;
+  background-color: #ffffff;
+  height: 100%;
+  overflow: hidden;
   #capture-screen {
-    background-color: #ffffff; height: 100%; overflow: hidden; width: 100%;
+    background-color: #ffffff;
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
     webcam {
-      height: 100%; width: 100%;
+      height: 100%;
+      width: 100%;
     }
     ::ng-deep .webcam-wrapper {
-      border: 5px solid #01A0DA;
+      border: 5px solid #01a0da;
     }
     @keyframes resplandorAnimation {
       0%,
@@ -40,7 +46,26 @@ ul.links {
       }
     }
     .legend {
-      background: url('/assets/img/IDIconSMFront-azul.png') no-repeat; background-color: #FFFFFF; background-position: 20px 19px; background-size: 25px 31px; border-radius: 6px; bottom: 0; box-sizing: content-box; color: #01A0DA; font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 500; height: 166px; left: 4%; margin: auto; padding: 63px 11px 35px 13px; position: absolute; top: 0; width: 36px; writing-mode: vertical-rl;
+      cursor: pointer;
+      background: url('/assets/img/IDIconSMFront-azul.png') no-repeat;
+      background-color: #ffffff;
+      background-position: 20px 19px;
+      background-size: 25px 31px;
+      border-radius: 6px;
+      bottom: 0;
+      box-sizing: content-box;
+      color: #01a0da;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      /*height: 166px;*/
+      left: 4%;
+      margin: auto;
+      padding: 63px 11px 35px 13px;
+      position: absolute;
+      top: 0;
+      width: 36px;
+      writing-mode: vertical-rl;
     }
     #back1 {
       background: url('/assets/img/cross-light.png') no-repeat;
@@ -54,14 +79,28 @@ ul.links {
     }
   }
   #result-screen {
-    background-color: #ffffff; height: 100%; 
+    background-color: #ffffff;
+    height: 100%;
     #result-image-wrapper {
-      margin-top: 20%; position: relative; 
+      margin-top: 20%;
+      position: relative;
       #result-image {
-        display: block; height: 30%; margin: 0 auto; width: 83%;
+        display: block;
+        height: 30%;
+        margin: 0 auto;
+        width: 83%;
       }
       #checked {
-        background: url('/assets/img-new/icon-check.png') no-repeat center bottom; box-sizing: content-box; height: 100%; padding-bottom: 24px; overflow: hidden; position: absolute; top: 0; width: 100%; z-index: 2;
+        background: url('/assets/img-new/icon-check.png') no-repeat center
+          bottom;
+        box-sizing: content-box;
+        height: 100%;
+        padding-bottom: 24px;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 2;
       }
     }
     .title {
@@ -86,7 +125,11 @@ ul.links {
     }
   }
   .lower-panel {
-    bottom: 0; padding-bottom: 33px; position: absolute; text-align: center; width: 100%;
+    bottom: 0;
+    padding-bottom: 33px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
   }
   .button {
     background-color: #ff9204;
@@ -101,10 +144,10 @@ ul.links {
     padding: 12px 0;
     cursor: pointer;
     &:disabled {
-      background-color: #D1D1D1;
+      background-color: #d1d1d1;
     }
     &:hover {
-      background-color: #FF710F;
+      background-color: #ff710f;
     }
     &:focus {
       background-color: #e88300;
@@ -191,4 +234,3 @@ video {
     text-indent: -3ch;
   }
 }
-

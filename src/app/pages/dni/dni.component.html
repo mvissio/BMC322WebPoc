@@ -14,17 +14,27 @@
       (cameraSwitched)="cameraWasSwitched($event)"
       (initError)="handleInitError($event)"
     ></webcam>
-    <div id="legend1" *ngIf="legend1" class="legend">
-      Ubicá el FRENTE de tu DNI en el recuadro
-      <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
+    <div
+      id="legend1"
+      *ngIf="legend1 && showButtonAction"
+      class="legend"
+      (click)="triggerSnapshot()"
+    >
+      Ubicá el FRENTE de tu DNI en el recuadro y hace click aquí
+      <!--<div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
         📸
-      </div>
+      </div>-->
     </div>
-    <div id="legend2" *ngIf="!legend1" class="legend">
-      Ubicá el DORSO de tu DNI en el recuadro
-      <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
+    <div
+      id="legend2"
+      *ngIf="!legend1 && showButtonAction"
+      class="legend"
+      (click)="triggerSnapshot()"
+    >
+      Ubicá el DORSO de tu DNI en el recuadro y hace click aquí
+      <!--<div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
         📸
-      </div>
+      </div>-->
     </div>
   </div>
   <div class="flex-column" *ngIf="loading">
@@ -70,7 +80,7 @@
       value="INTENTAR NUEVAMENTE"
       (click)="goBack($event)"
     >
-      INTENTAR NEUVAMENTE
+      INTENTAR NUEVAMENTE
     </button>
   </div>
 </div>
