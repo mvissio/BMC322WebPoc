@@ -178,6 +178,8 @@ export class DniComponent implements OnInit {
         if (!this.codeReaded) {
           this.showCamera = false;
           this.showImage = false;
+          this.switched = false;
+          this.showButtonAction = true;
           this.errorMessage =
             'No pudimos leer el código de barra, por favor intentelo nuevamente';
         } else {
