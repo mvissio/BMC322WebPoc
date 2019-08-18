@@ -44,9 +44,9 @@
     <!--<div id="back2"></div>-->
     <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
       <img id="result-image" [src]="webcamImageF.imageAsDataUrl" />
-      <div id="checked"></div>
     </div>
     <div class="lower-panel">
+      <div class="checked"></div>
       <div class="title">¡Listo!</div>
       <div class="subtitle" [ngClass]="!legend1 ? 'hidden' : ''">
         Ahora continuaremos con el<br /><span id="bold">dorso</span>de tu DNI.
@@ -98,7 +98,12 @@
       <tbody>
         <tr class="table-primary" *ngFor="let option of content | keyvalue">
           <th scope="row">{{ option.key }}</th>
-          <td>{{ option.value }}</td>
+          <span *ngIf="option.key !== 'person'">
+            <td>{{ option.value }}</td></span
+          >
+          <span *ngIf="option.key === 'person'">
+            <td>Ver Información Personal</td></span
+          >
         </tr>
       </tbody>
       <tbody>
@@ -111,7 +116,7 @@
         </tr>
       </tbody>
     </table>
-    <div class="button-content" *ngIf="showButtonAction">
+    <div class="lower-panel" *ngIf="showButtonAction">
       <button
         class="button"
         type="button"

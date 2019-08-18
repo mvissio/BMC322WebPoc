@@ -21,13 +21,13 @@
     </div>
   </div>
   <div id="result-screen" *ngIf="webcamImageF && !errorMessage">
-    <div id="back2"></div>
+    <!--<div id="back2"></div>-->
     <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
       <img id="result-image" [src]="webcamImageF.imageAsDataUrl" />
-      <div class="title">¡Listo!</div>
-      <div id="checked"></div>
+      <div class="checked"></div>
     </div>
     <div class="lower-panel">
+      <div class="title">¡Listo!</div>
       <button
         class="button"
         type="button"

@@ -26,7 +26,12 @@
     <tbody>
       <tr class="table-primary" *ngFor="let option of content | keyvalue">
         <th scope="row">{{ option.key }}</th>
-        <td>{{ option.value }}</td>
+        <span *ngIf="option.key !== 'person'">
+          <td>{{ option.value }}</td></span
+        >
+        <span *ngIf="option.key === 'person'">
+          <td>Ver Información Personal</td></span
+        >
       </tr>
     </tbody>
   </table>
