@@ -1,4 +1,4 @@
-<div *ngIf="!resultOk" id="content-wrapper">
+<div *ngIf="!resultOk" class="content-wrapper">
   <div id="capture-screen" *ngIf="showCamera">
     <webcam
       [height]="300"
@@ -88,35 +88,53 @@
 </div>
 <div *ngIf="resultOk">
   <div class="table-responsive" *ngIf="content">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Key</th>
-          <th scope="col">Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="table-primary" *ngFor="let option of content | keyvalue">
-          <th scope="row">{{ option.key }}</th>
-          <span *ngIf="option.key !== 'person'">
-            <td>{{ option.value }}</td></span
+    <h2>
+      Persona
+    </h2>
+    <div class="table-responsive" *ngIf="content">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Key</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-primary" *ngFor="let option of content | keyvalue">
+            <th scope="row">{{ option.key }}</th>
+            <span *ngIf="option.key !== 'person'">
+              <td>{{ option.value }}</td></span
+            >
+            <span *ngIf="option.key === 'person'">
+              <td>Ver Información Personal</td></span
+            >
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>
+      Información Personal
+    </h2>
+    <div class="table-responsive" *ngIf="content.person">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Key</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="table-primary"
+            *ngFor="let option of content.person | keyvalue"
           >
-          <span *ngIf="option.key === 'person'">
-            <td>Ver Información Personal</td></span
-          >
-        </tr>
-      </tbody>
-      <tbody>
-        <tr
-          class="table-primary"
-          *ngFor="let option of content.person | keyvalue"
-        >
-          <th scope="row">{{ option.key }}</th>
-          <td>{{ option.value }}</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="lower-panel" *ngIf="showButtonAction">
+            <th scope="row">{{ option.key }}</th>
+            <td>{{ option.value }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="content-wrapper lower-panel" *ngIf="showButtonAction">
       <button
         class="button"
         type="button"

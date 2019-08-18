@@ -69,7 +69,7 @@ export class DniComponent implements OnInit {
     dbr.licenseKey =
       't0068NQAAACLXANtkbkqiXyqxKLgs4E96lS/m0s/4I3VNy1EhUBcqD84+8iWXS9CbBmmp3+qSxewQfSLBmPTiimqF1MEjhr8=';
     // localStorage.clear();
-    // this.goToResult();
+    this.goToResult();
   }
 
   public triggerSnapshot(): void {
