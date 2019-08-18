@@ -144,6 +144,7 @@ export class DniComponent implements OnInit {
             this.detecto = true;
             this.showCamera = false;
             this.showImage = true;
+            this.errorMessage = '';
 
             /*this.detecto = false;
             this.showCamera = false;
@@ -159,6 +160,7 @@ export class DniComponent implements OnInit {
           this.detecto = true;
           this.showCamera = false;
           this.showImage = true;
+          this.errorMessage = '';
 
           /*this.detecto = false;
           this.showCamera = false;
