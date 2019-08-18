@@ -42,7 +42,6 @@ export class DniComponent implements OnInit {
   showCamera: boolean;
   showImage: boolean;
   errorMessage: string;
-  loading: boolean;
   resultOk: boolean;
   content: ResponseRenaper;
   person: PersonRenaper;
@@ -65,7 +64,6 @@ export class DniComponent implements OnInit {
     this.showCamera = true;
     this.showImage = false;
     this.errorMessage = '';
-    this.loading = false;
     this.resultOk = false;
     this.showButtonAction = true;
     dbr.licenseKey =
@@ -108,7 +106,6 @@ export class DniComponent implements OnInit {
 
   public handleImage(webcamImage: WebcamImage): void {
     this.showButtonAction = false;
-    this.loading = true;
     this.webcamImageF = webcamImage;
     if (this.legend1) {
       localStorage.setItem('imgDNI', this.webcamImageF.imageAsDataUrl);
@@ -166,7 +163,6 @@ export class DniComponent implements OnInit {
 
   async goToNext() {
     this.showButtonAction = false;
-    this.loading = true;
     if (this.legend1) {
       this.legend1 = false;
       this.detecto = false;
@@ -196,7 +192,6 @@ export class DniComponent implements OnInit {
 
   public goBack(event) {
     this.detecto = false;
-    this.loading = false;
     this.showImage = false;
     this.showCamera = true;
     this.legend1 = true;
@@ -209,7 +204,6 @@ export class DniComponent implements OnInit {
     const result = localStorage.getItem('resultDNI');
     this.content = JSON.parse(result);
     this.resultOk = true;
-    this.loading = false;
     this.showButtonAction = true;
   }
 
@@ -254,7 +248,6 @@ export class DniComponent implements OnInit {
                   error => {
                     this.errorMessage =
                       'No pudimos validar los datos del documento, por favor intentelo nuevamente';
-                    this.loading = false;
                     this.showCamera = false;
                     this.showImage = false;
                     this.showButtonAction = true;
