@@ -26,11 +26,9 @@ export class DniComponent implements OnInit {
   public deviceId: string;
   public errors: WebcamInitError[] = [];
   webcamImageF;
-  webcamImageFView = false;
   switched = false;
   legend1 = true;
   allowCameraSwitch = true;
-  multipleWebcamsAvailable = false;
   public width: any;
   public heith: any;
   imgDNI: string;
@@ -40,7 +38,7 @@ export class DniComponent implements OnInit {
   imageType = 'image/jpeg';
   subscribePerson: any;
   errorMessage: string;
-  showCamera: boolean;
+  showCamera = true;
   showImage: boolean;
   showErrorCodebar: boolean;
   loading: boolean;
