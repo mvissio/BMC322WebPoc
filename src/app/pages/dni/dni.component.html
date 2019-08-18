@@ -96,6 +96,12 @@
         </tr>
       </thead>
       <tbody>
+        <tr class="table-primary" *ngFor="let option of content | keyvalue">
+          <th scope="row">{{ option.key }}</th>
+          <td>{{ option.value }}</td>
+        </tr>
+      </tbody>
+      <tbody>
         <tr
           class="table-primary"
           *ngFor="let option of content.person | keyvalue"

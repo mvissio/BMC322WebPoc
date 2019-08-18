@@ -141,21 +141,35 @@ export class DniComponent implements OnInit {
             console.log('idCards=', idCards);
           } else {
             console.log('idCards error=', idCards);
-            this.detecto = false;
+            /* TODO: para que sigua igual */
+            this.detecto = true;
+            this.showCamera = false;
+            this.showImage = true;
+
+            /*this.detecto = false;
             this.showCamera = false;
             this.showImage = false;
             this.errorMessage =
-              'No se detectó ningún documento, por favor intentelo nuevamente';
+              'No se detectó ningún documento desde AWS, por favor intentelo nuevamente';*/
+            console.log('No se detectó ningún documento desde AWS');
           }
           this.showButtonAction = true;
         },
         err => {
-          this.detecto = false;
+          /* TODO: para que sigua igual */
+          this.detecto = true;
+          this.showCamera = false;
+          this.showImage = true;
+
+          /*this.detecto = false;
           this.showCamera = false;
           this.showImage = false;
           this.showButtonAction = true;
           this.errorMessage =
-            'Hubo un error en el servicio que detecta documento, por favor intentelo nuevamente';
+            'Hubo un error en el servicio que detecta documento en AWS, por favor intentelo nuevamente';*/
+          console.log(
+            'Hubo un error en el servicio que detecta documento en AWS'
+          );
         }
       )
       .add(() => detecDocumentSub.unsubscribe());
