@@ -138,9 +138,8 @@ export class DniComponent implements OnInit {
             this.showCamera = false;
             this.showImage = true;
             this.errorMessage = '';
-            console.log('idCards=', idCards);
+            console.log('Se dectectó documento con idCards=', idCards);
           } else {
-            console.log('idCards error=', idCards);
             /* TODO: para que sigua igual */
             this.detecto = true;
             this.showCamera = false;
@@ -151,7 +150,7 @@ export class DniComponent implements OnInit {
             this.showImage = false;
             this.errorMessage =
               'No se detectó ningún documento desde AWS, por favor intentelo nuevamente';*/
-            console.log('No se detectó ningún documento desde AWS');
+            console.log('No se detectó ningún documento desde AWS', idCards);
           }
           this.showButtonAction = true;
         },
