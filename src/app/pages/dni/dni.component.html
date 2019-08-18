@@ -37,7 +37,7 @@
       </div>-->
     </div>
   </div>
-  <div class="flex-column" *ngIf="loading">
+  <div class="spinner" *ngIf="loading && !errorMessage">
     <img src="assets/img/Spinner-1s-200px.svg" />
   </div>
   <div id="result-screen" *ngIf="showImage">
@@ -51,14 +51,16 @@
       <div class="subtitle" [ngClass]="!legend1 ? 'hidden' : ''">
         Ahora continuaremos con el<br /><span id="bold">dorso</span>de tu DNI.
       </div>
-      <button
-        class="button"
-        type="button"
-        value="CONTINUAR"
-        (click)="goToNext($event)"
-      >
-        CONTINUAR
-      </button>
+      <div *ngIf="showButtonAction">
+        <button
+          class="button"
+          type="button"
+          value="CONTINUAR"
+          (click)="goToNext($event)"
+        >
+          CONTINUAR
+        </button>
+      </div>
     </div>
   </div>
 
@@ -85,7 +87,7 @@
   </div>
 </div>
 <div *ngIf="resultOk">
-  <div class="table-responsive" *ngIf="person">
+  <div class="table-responsive" *ngIf="content">
     <table class="table">
       <thead>
         <tr>
@@ -94,13 +96,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="table-primary" *ngFor="let option of person | keyvalue">
+        <tr
+          class="table-primary"
+          *ngFor="let option of content.person | keyvalue"
+        >
           <th scope="row">{{ option.key }}</th>
           <td>{{ option.value }}</td>
         </tr>
       </tbody>
     </table>
-    <div class="button-content">
+    <div class="button-content" *ngIf="showButtonAction">
       <button
         class="button"
         type="button"

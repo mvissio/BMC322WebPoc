@@ -71,6 +71,7 @@ export class DniComponent implements OnInit {
     dbr.licenseKey =
       't0068NQAAACLXANtkbkqiXyqxKLgs4E96lS/m0s/4I3VNy1EhUBcqD84+8iWXS9CbBmmp3+qSxewQfSLBmPTiimqF1MEjhr8=';
     // localStorage.clear();
+    // this.goToResult();
   }
 
   public triggerSnapshot(): void {
@@ -107,6 +108,7 @@ export class DniComponent implements OnInit {
 
   public handleImage(webcamImage: WebcamImage): void {
     this.showButtonAction = false;
+    this.loading = true;
     this.webcamImageF = webcamImage;
     if (this.legend1) {
       localStorage.setItem('imgDNI', this.webcamImageF.imageAsDataUrl);
@@ -139,7 +141,6 @@ export class DniComponent implements OnInit {
             this.showCamera = false;
             this.showImage = true;
             this.errorMessage = '';
-            this.showButtonAction = true;
             console.log('idCards=', idCards);
           } else {
             console.log('idCards error=', idCards);
@@ -149,11 +150,13 @@ export class DniComponent implements OnInit {
             this.errorMessage =
               'No se detectó ningún documento, por favor intentelo nuevamente';
           }
+          this.showButtonAction = true;
         },
         err => {
           this.detecto = false;
           this.showCamera = false;
           this.showImage = false;
+          this.showButtonAction = true;
           this.errorMessage =
             'Hubo un error en el servicio que detecta documento, por favor intentelo nuevamente';
         }
@@ -162,6 +165,8 @@ export class DniComponent implements OnInit {
   }
 
   async goToNext() {
+    this.showButtonAction = false;
+    this.loading = true;
     if (this.legend1) {
       this.legend1 = false;
       this.detecto = false;
@@ -203,8 +208,9 @@ export class DniComponent implements OnInit {
   public goToResult() {
     const result = localStorage.getItem('resultDNI');
     this.content = JSON.parse(result);
-    this.person = JSON.parse(this.content.person);
     this.resultOk = true;
+    this.loading = false;
+    this.showButtonAction = true;
   }
 
   goToFaceApi() {
@@ -251,6 +257,7 @@ export class DniComponent implements OnInit {
                     this.loading = false;
                     this.showCamera = false;
                     this.showImage = false;
+                    this.showButtonAction = true;
                   }
                 )
                 .add(() => this.subscribePerson.unsubscribe());

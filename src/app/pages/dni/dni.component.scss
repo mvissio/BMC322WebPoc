@@ -234,3 +234,16 @@ video {
     text-indent: -3ch;
   }
 }
+.spinner {
+  bottom: 0;
+  box-sizing: content-box;
+  font-size: 13px;
+  font-weight: 500;
+
+  left: 4%;
+  margin: auto;
+  padding: 63px 11px 35px 13px;
+  position: absolute;
+  top: 0;
+  width: 36px;
+}
