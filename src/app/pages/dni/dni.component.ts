@@ -127,12 +127,6 @@ export class DniComponent implements OnInit {
           const idCards: IAwsResponse = res.find(
             r => r.Name === CONST_AWS.ID_CARDS
           );
-          /*const document: IAwsResponse = res.find(
-          r => r.Name === CONST_AWS.DOCUMENT
-        );
-        const license: IAwsResponse = res.find(
-          r => r.Name === CONST_AWS.LICENSE
-        );*/
           if (idCards && idCards.Confidence >= 70) {
             this.detecto = true;
             this.showCamera = false;
@@ -166,6 +160,8 @@ export class DniComponent implements OnInit {
 
   async goToNext() {
     this.showButtonAction = false;
+    this.errorMessage = '';
+
     if (this.legend1) {
       this.legend1 = false;
       this.detecto = false;
@@ -179,16 +175,18 @@ export class DniComponent implements OnInit {
         localStorage.getItem('imgDNIDorso')
       );
       Promise.all([prom1, prom2]).then(value => {
-        if (!this.codeReaded) {
-          this.showCamera = false;
-          this.showImage = false;
-          this.switched = false;
-          this.showButtonAction = true;
-          this.errorMessage =
-            'No pudimos leer el código de barra, por favor intentelo nuevamente';
-        } else {
-          this.goToResult();
-        }
+        setTimeout(() => {
+          if (!this.codeReaded) {
+            this.showCamera = false;
+            this.showImage = false;
+            this.switched = false;
+            this.showButtonAction = true;
+            this.errorMessage =
+              'No pudimos leer el código de barra, por favor intentelo nuevamente';
+          } else {
+            this.goToResult();
+          }
+        }, 4000);
       });
     }
   }
@@ -206,8 +204,10 @@ export class DniComponent implements OnInit {
   public goToResult() {
     const result = localStorage.getItem('resultDNI');
     this.content = JSON.parse(result);
+    this.person = JSON.parse(this.content.person);
     this.resultOk = true;
     this.showButtonAction = true;
+    this.errorMessage = '';
   }
 
   goToFaceApi() {

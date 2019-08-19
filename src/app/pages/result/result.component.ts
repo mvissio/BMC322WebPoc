@@ -24,7 +24,7 @@ export class ResultComponent implements OnInit {
     this.imgDNIDorsoSRC = localStorage.getItem('imgDNIDorso');
     this.imgDNISRC = localStorage.getItem('imgDNI');
     this.content = JSON.parse(result);
-
+    this.person = JSON.parse(this.content.person);
     const resultFace = localStorage.getItem('resultFace');
     if (result) {
       this.contentFace = JSON.parse(resultFace);

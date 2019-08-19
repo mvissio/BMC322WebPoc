@@ -115,7 +115,7 @@
     <h2>
       Información Personal
     </h2>
-    <div class="table-responsive" *ngIf="content.person">
+    <div class="table-responsive" *ngIf="person">
       <table class="table">
         <thead>
           <tr>
@@ -124,10 +124,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            class="table-primary"
-            *ngFor="let option of content.person | keyvalue"
-          >
+          <tr class="table-primary" *ngFor="let option of person | keyvalue">
             <th scope="row">{{ option.key }}</th>
             <td>{{ option.value }}</td>
           </tr>
