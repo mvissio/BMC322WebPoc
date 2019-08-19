@@ -120,16 +120,6 @@ export class DniComponent implements OnInit {
   }
 
   detecDocument(img) {
-    /* TODO se demora mucho ir a AWS y falla. En iphone nunca me da ok el servicio */
-    this.detecto = true;
-    this.showCamera = false;
-    this.showImage = true;
-    this.errorMessage = '';
-    this.showButtonAction = true;
-
-    /* FIN TODO */
-    return true;
-
     const detecDocumentSub = this.commonsService
       .detectDocument(img)
       .subscribe(
@@ -150,34 +140,22 @@ export class DniComponent implements OnInit {
             this.errorMessage = '';
             console.log('Se dectectó documento con idCards=', idCards);
           } else {
-            /* TODO: para que sigua igual */
-            this.detecto = true;
-            this.showCamera = false;
-            this.showImage = true;
-            this.errorMessage = '';
-            /* fin TODO */
-            /*this.detecto = false;
+            this.detecto = false;
             this.showCamera = false;
             this.showImage = false;
             this.errorMessage =
-              'No se detectó ningún documento desde AWS, por favor intentelo nuevamente';*/
+              'No se detectó ningún documento desde AWS, por favor intentelo nuevamente';
             console.log('No se detectó ningún documento desde AWS', idCards);
           }
           this.showButtonAction = true;
         },
         err => {
-          /* TODO: para que sigua igual */
-          this.detecto = true;
-          this.showCamera = false;
-          this.showImage = true;
-          this.errorMessage = '';
-          /* fin TODO */
           this.showButtonAction = true;
-          /*this.detecto = false;
+          this.detecto = false;
           this.showCamera = false;
           this.showImage = false;
           this.errorMessage =
-            'Hubo un error en el servicio que detecta documento en AWS, por favor intentelo nuevamente';*/
+            'Hubo un error en el servicio que detecta documento en AWS, por favor intentelo nuevamente';
           console.log(
             'Hubo un error en el servicio que detecta documento en AWS'
           );
