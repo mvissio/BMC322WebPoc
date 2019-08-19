@@ -233,10 +233,13 @@ export class DniComponent implements OnInit {
         scanner.hide();
       });
     });*/
-
+    const base64String = imgToRead.replace(
+      /^data:image\/(png|jpg|jpeg);base64,/,
+      ''
+    );
     return dbr
       .createInstance()
-      .then(reader => reader.decodeBase64String(imgToRead))
+      .then(reader => reader.decodeBase64String(base64String))
       .then(r => {
         console.log(r);
         if (r.length > 0) {
