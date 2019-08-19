@@ -83,6 +83,8 @@ export class SelfieComponent implements OnInit {
     this.webcamImageF = false;
   }
   goToNext() {
-    this.router.navigate(['result']);
+    setTimeout(() => {
+      this.router.navigate(['result']);
+    }, 4000);
   }
 }

@@ -211,6 +211,7 @@ export class DniComponent implements OnInit {
     this.errorMessage = '';
     this.switched = false;
     this.showButtonAction = true;
+    this.webcamImageF = false;
   }
 
   public goToResult() {
