@@ -69,7 +69,7 @@ export class DniComponent implements OnInit {
     this.showButtonAction = true;
     dbr.licenseKey =
       't0068NQAAACLXANtkbkqiXyqxKLgs4E96lS/m0s/4I3VNy1EhUBcqD84+8iWXS9CbBmmp3+qSxewQfSLBmPTiimqF1MEjhr8=';
-    // localStorage.clear();
+    localStorage.clear();
     // this.goToResult();
   }
 
@@ -212,6 +212,7 @@ export class DniComponent implements OnInit {
     this.switched = false;
     this.showButtonAction = true;
     this.webcamImageF = false;
+    localStorage.clear();
   }
 
   public goToResult() {

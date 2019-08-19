@@ -61,13 +61,14 @@ ul.links {
     background-color: #ffffff;
     height: 100%;
     #result-image-wrapper {
-      margin-top: 35%;
+      margin-top: 0;
       position: relative;
       #result-image {
         display: block;
         height: 30%;
         margin: 0 auto;
-        width: 83%;
+        width: 66%;
+        transform: rotateZ(-90deg);
       }
       .checked {
         background: url('/assets/img-new/icon-check.png') no-repeat center bottom; box-sizing: content-box; height: 100%; padding-bottom: 24px; overflow: hidden; position: absolute; top: 0; width: 100%; z-index: 2; 
