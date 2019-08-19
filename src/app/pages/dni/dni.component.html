@@ -20,7 +20,7 @@
       class="legend"
       (click)="triggerSnapshot()"
     >
-      Ubicá el FRENTE de tu DNI en el recuadro y hace click aquí
+      Ubicá el FRENTE de tu DNI en el recuadro y presioná aquí
       <!--<div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
         📸
       </div>-->
@@ -31,7 +31,7 @@
       class="legend"
       (click)="triggerSnapshot()"
     >
-      Ubicá el DORSO de tu DNI en el recuadro y hace click aquí
+      Ubicá el DORSO de tu DNI en el recuadro y presioná aquí
       <!--<div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
         📸
       </div>-->
@@ -44,12 +44,12 @@
     <!--<div id="back2"></div>-->
     <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
       <img id="result-image" [src]="webcamImageF.imageAsDataUrl" />
+      <div class="checked"></div>
     </div>
     <div class="lower-panel">
-      <div class="checked"></div>
       <div class="title">¡Listo!</div>
       <div class="subtitle" [ngClass]="!legend1 ? 'hidden' : ''">
-        Ahora continuaremos con el<br /><span id="bold">dorso</span>de tu DNI.
+        Ahora continuaremos con el<br /><span id="bold">dorso</span> de tu DNI.
       </div>
       <div *ngIf="showButtonAction">
         <button
