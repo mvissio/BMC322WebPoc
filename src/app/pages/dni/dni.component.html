@@ -20,7 +20,7 @@
       class="legend"
       (click)="triggerSnapshot()"
     >
-      Ubicá el FRENTE de tu DNI en el recuadro y hace click aquí
+      Ubicá el FRENTE de tu DNI en el recuadro y presioná aquí
       <!--<div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
         📸
       </div>-->
@@ -31,7 +31,7 @@
       class="legend"
       (click)="triggerSnapshot()"
     >
-      Ubicá el DORSO de tu DNI en el recuadro y hace click aquí
+      Ubicá el DORSO de tu DNI en el recuadro y presioná aquí
       <!--<div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
         📸
       </div>-->
@@ -44,12 +44,12 @@
     <!--<div id="back2"></div>-->
     <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
       <img id="result-image" [src]="webcamImageF.imageAsDataUrl" />
+      <div class="checked"></div>
     </div>
     <div class="lower-panel">
-      <div class="checked"></div>
       <div class="title">¡Listo!</div>
       <div class="subtitle" [ngClass]="!legend1 ? 'hidden' : ''">
-        Ahora continuaremos con el<br /><span id="bold">dorso</span>de tu DNI.
+        Ahora continuaremos con el<br /><span id="bold">dorso</span> de tu DNI.
       </div>
       <div *ngIf="showButtonAction">
         <button
@@ -75,15 +75,16 @@
         </div>
       </div>
     </div>
-
-    <button
-      class="button"
-      type="button"
-      value="INTENTAR NUEVAMENTE"
-      (click)="goBack($event)"
-    >
-      INTENTAR NUEVAMENTE
-    </button>
+    <div class="lower-panel">
+      <button
+        class="button"
+        type="button"
+        value="INTENTAR NUEVAMENTE"
+        (click)="goBack($event)"
+      >
+        INTENTAR NUEVAMENTE
+      </button>
+    </div>
   </div>
 </div>
 <div *ngIf="resultOk">
@@ -115,7 +116,7 @@
     <h2>
       Información Personal
     </h2>
-    <div class="table-responsive" *ngIf="content.person">
+    <div class="table-responsive" *ngIf="person">
       <table class="table">
         <thead>
           <tr>
@@ -124,10 +125,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            class="table-primary"
-            *ngFor="let option of content.person | keyvalue"
-          >
+          <tr class="table-primary" *ngFor="let option of person | keyvalue">
             <th scope="row">{{ option.key }}</th>
             <td>{{ option.value }}</td>
           </tr>
