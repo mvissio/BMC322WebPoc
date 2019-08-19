@@ -37,7 +37,7 @@ export class DniComponent implements OnInit {
   imgDNIDorso: string;
   codeReaded: any;
   detecto = false;
-  imageType = 'image/jpeg';
+  imageType = 'image/png';
   subscribePerson: any;
   showCamera: boolean;
   showImage: boolean;
@@ -216,9 +216,27 @@ export class DniComponent implements OnInit {
   }
 
   getReadCodeBar(imgToRead) {
+    /*let scanner = null;
+    dbr.BarcodeScanner.createInstance({
+      onFrameRead: results => {
+        console.log(results);
+      },
+      onUnduplicatedRead: (txt, result) => {
+        alert(txt);
+      }
+    }).then(reader => {
+      console.log(reader);
+      scanner = reader;
+      scanner.show().catch(ex => {
+        console.log(ex);
+        alert(ex.message || ex);
+        scanner.hide();
+      });
+    });*/
+
     return dbr
       .createInstance()
-      .then(reader => reader.decode(imgToRead))
+      .then(reader => reader.decodeBase64String(imgToRead))
       .then(r => {
         console.log(r);
         if (r.length > 0) {
