@@ -208,15 +208,8 @@ video {
   }
 }
 .spinner {
-  bottom: 0;
-  box-sizing: content-box;
-  font-size: 13px;
-  font-weight: 500;
-
-  left: 4%;
-  margin: auto;
-  padding: 63px 11px 35px 13px;
-  position: absolute;
-  top: 0;
-  width: 36px;
+  background: #FFFFFF; height: 100%; position: absolute; top: 0; width: 100%; z-index: 3;
+  img {
+    bottom: 0; position: absolute; left: 0; margin: auto; right: 0; top: 0;
+  }
 }
