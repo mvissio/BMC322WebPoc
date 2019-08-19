@@ -187,7 +187,7 @@ export class DniComponent implements OnInit {
           } else {
             this.goToResult();
           }
-        }, 4000);
+        }, 6000);
       });
     }
   }
