@@ -46,6 +46,7 @@ export class DniComponent implements OnInit {
   content: ResponseRenaper;
   person: PersonRenaper;
   showButtonAction: boolean;
+  checkedAWS = false;
   private trigger: Subject<void> = new Subject<void>();
   public videoOptions: MediaTrackConstraints = {};
   private nextWebcam: Subject<boolean | string> = new Subject<
@@ -120,6 +121,16 @@ export class DniComponent implements OnInit {
   }
 
   detecDocument(img) {
+    // sino requiere detectar AWS
+    if (!this.checkedAWS) {
+      this.detecto = true;
+      this.showCamera = false;
+      this.showImage = true;
+      this.errorMessage = '';
+      this.showButtonAction = true;
+      console.log('Evitamos lectura AWS');
+      return true;
+    }
     const detecDocumentSub = this.commonsService
       .detectDocument(img)
       .subscribe(

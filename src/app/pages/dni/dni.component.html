@@ -37,6 +37,12 @@
       </div>-->
     </div>
   </div>
+  <div
+    *ngIf="legend1 && showButtonAction && !errorMessage && !webcamImageF"
+    style="position: absolute;top: 0;padding:2rem"
+  >
+    <input type="checkbox" name="checkedAWS" [(ngModel)]="checkedAWS" />AWS
+  </div>
   <div class="spinner" *ngIf="!errorMessage && !showButtonAction">
     <img src="assets/img/Spinner-1s-200px.svg" />
   </div>
