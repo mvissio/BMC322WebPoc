@@ -14,29 +14,22 @@
   display: block;
   height: 30%;
   margin: 0 auto;
-  width: 83%;
+  width: 100%;
 }
 
 .capturedImg {
   width: 25%;
 }
 .lower-panel {
-  display: flex;
-  flex-direction: row;
-}
-#checked {
-  background: url('/assets/img-new/icon-check.png') no-repeat center bottom;
+  bottom: 0;
+  padding-bottom: 33px;
   position: absolute;
-  left: 0;
-  top: 0;
-  right: 43rem;
-  bottom: 9rem;
+  text-align: center;
+  width: 100%;
 }
-#info{
+#info {
   position: absolute;
-  ;
 }
-
 
 .bottom-15 {
   position: fixed;
@@ -44,9 +37,45 @@
   width: 100%;
   text-align: center;
 }
-.actionBtn{
+.actionBtn {
   position: fixed;
   bottom: 40%;
   left: 45%;
   font-size: xx-large;
+}
+.button {
+  background-color: #ff9204;
+  border: 2px solid #ff9204;
+  border-radius: 999px;
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  max-width: 320px;
+  width: 90%;
+  padding: 12px 0;
+  cursor: pointer;
+  &:disabled {
+    background-color: #d1d1d1;
+  }
+  &:hover {
+    background-color: #ff710f;
+  }
+  &:focus {
+    background-color: #e88300;
+  }
+}
+
+.checked {
+  background: url('/assets/img-new/icon-check.png') no-repeat center bottom;
+  box-sizing: content-box;
+  height: 100%;
+  bottom: 20%;
+  position: absolute;
+  width: 100%;
+}
+.title {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
 }

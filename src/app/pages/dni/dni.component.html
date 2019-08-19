@@ -1,84 +1,146 @@
-<div *ngIf="!resultOk" id="content-wrapper">
+<div *ngIf="!resultOk" class="content-wrapper">
   <div id="capture-screen" *ngIf="showCamera">
-    <webcam [height]="300" [width]="width" class="fa-rotate-90" [imageType]="imageType" [trigger]="triggerObservable"
-            (imageCapture)="handleImage($event)" *ngIf="showWebcam" [allowCameraSwitch]="allowCameraSwitch"
-            [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions"
-            (cameraSwitched)="cameraWasSwitched($event)" (initError)="handleInitError($event)"></webcam>
-    <div id="legend1" *ngIf="legend1" class="legend">
-      Ubicá el FRENTE de tu DNI en el recuadro
-      <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
+    <webcam
+      [height]="300"
+      [width]="width"
+      class="fa-rotate-90"
+      [imageType]="imageType"
+      [trigger]="triggerObservable"
+      (imageCapture)="handleImage($event)"
+      *ngIf="showWebcam"
+      [allowCameraSwitch]="allowCameraSwitch"
+      [switchCamera]="nextWebcamObservable"
+      [videoOptions]="videoOptions"
+      (cameraSwitched)="cameraWasSwitched($event)"
+      (initError)="handleInitError($event)"
+    ></webcam>
+    <div
+      id="legend1"
+      *ngIf="legend1 && showButtonAction"
+      class="legend"
+      (click)="triggerSnapshot()"
+    >
+      Ubicá el FRENTE de tu DNI en el recuadro y hace click aquí
+      <!--<div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
         📸
-      </div>
-    </div>
-    <div id="legend2" *ngIf="!legend1" class="legend">
-      Ubicá el DORSO de tu DNI en el recuadro
-      <div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
-        📸
-      </div>
+      </div>-->
     </div>
     <div
-      id="errorMessage" class="alert-info text-center text-capitalize" *ngIf="errorMessage">
-      {{ errorMessage }}
+      id="legend2"
+      *ngIf="!legend1 && showButtonAction"
+      class="legend"
+      (click)="triggerSnapshot()"
+    >
+      Ubicá el DORSO de tu DNI en el recuadro y hace click aquí
+      <!--<div class="actionBtn" (click)="triggerSnapshot()" title="Take Picture">
+        📸
+      </div>-->
     </div>
   </div>
-  <div class="flex-column" *ngIf="loading"><img src="assets/img/Spinner-1s-200px.svg"></div>
-  <div id="message" *ngIf="showImage">
-    <div id="result-screen">
-      <div id="back2"></div>
-      <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
-        <img [width]="width" [src]="webcamImageF.imageAsDataUrl"/>
+  <div class="spinner" *ngIf="!errorMessage && !showButtonAction">
+    <img src="assets/img/Spinner-1s-200px.svg" />
+  </div>
+  <div id="result-screen" *ngIf="showImage">
+    <!--<div id="back2"></div>-->
+    <div id="result-image-wrapper" class="snapshot" *ngIf="webcamImageF">
+      <img id="result-image" [src]="webcamImageF.imageAsDataUrl" />
+    </div>
+    <div class="lower-panel">
+      <div class="checked"></div>
+      <div class="title">¡Listo!</div>
+      <div class="subtitle" [ngClass]="!legend1 ? 'hidden' : ''">
+        Ahora continuaremos con el<br /><span id="bold">dorso</span>de tu DNI.
       </div>
-      <div class="lower-panel">
-        <div id="checked"></div>
-        <div class="title">¡Listo!</div>
-        <div class="subtitle" *ngIf="!legend1">
-          Ahora continuaremos con el<br/><span id="bold">{{legend1 ? 'dorso' : ''          }}</span>
-          de tu DNI.
-        </div>
-      </div>
-      <div class="button-content">
+      <div *ngIf="showButtonAction">
         <button
-          class="button" type="button" value="CONTINUAR" (click)="goToNext($event)">
+          class="button"
+          type="button"
+          value="CONTINUAR"
+          (click)="goToNext($event)"
+        >
           CONTINUAR
         </button>
       </div>
     </div>
   </div>
-  <div class="button-content" *ngIf="showErrorCodebar">
+
+  <div class="button-content" *ngIf="errorMessage">
     <div class="container mb-5">
       <div class="card">
-      <div class="card-header">
-        <span>Disculpe</span>
-      </div>
+        <div class="card-header">
+          <span>Disculpe</span>
+        </div>
         <div class="card-body">
-        <span>No pudimos validar los datos del documento, por favor intentelo nuevamente</span>
-      </div>
+          <span>{{ errorMessage }}</span>
+        </div>
       </div>
     </div>
 
-    <button class="button" type="button" value="INTENTAR NUEVAMENTE" (click)="goBack($event)">
-      INTENTAR NEUVAMENTE
+    <button
+      class="button"
+      type="button"
+      value="INTENTAR NUEVAMENTE"
+      (click)="goBack($event)"
+    >
+      INTENTAR NUEVAMENTE
     </button>
   </div>
 </div>
 <div *ngIf="resultOk">
-  <div class="table-responsive" *ngIf="person">
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">Key</th>
-        <th scope="col">Value</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr class="table-primary" *ngFor="let option of person | keyvalue">
-        <th scope="row">{{ option.key }}</th>
-        <td>{{ option.value }}</td>
-      </tr>
-      </tbody>
-    </table>
-    <div class="button-content">
-      <button class="button" type="button" value="CONTINUAR" (click)="goToFaceApi()">
+  <div class="table-responsive" *ngIf="content">
+    <h2>
+      Persona
+    </h2>
+    <div class="table-responsive" *ngIf="content">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Key</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-primary" *ngFor="let option of content | keyvalue">
+            <th scope="row">{{ option.key }}</th>
+            <span *ngIf="option.key !== 'person'">
+              <td>{{ option.value }}</td></span
+            >
+            <span *ngIf="option.key === 'person'">
+              <td>Ver Información Personal</td></span
+            >
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>
+      Información Personal
+    </h2>
+    <div class="table-responsive" *ngIf="content.person">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Key</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="table-primary"
+            *ngFor="let option of content.person | keyvalue"
+          >
+            <th scope="row">{{ option.key }}</th>
+            <td>{{ option.value }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="content-wrapper lower-panel" *ngIf="showButtonAction">
+      <button
+        class="button"
+        type="button"
+        value="CONTINUAR"
+        (click)="goToFaceApi()"
+      >
         CONTINUAR
       </button>
     </div>
