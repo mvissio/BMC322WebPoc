@@ -151,7 +151,8 @@ export class DniComponent implements OnInit {
           this.errorMessage =
             'Hubo un error en el servicio que detecta documento en AWS, por favor intentelo nuevamente';
           console.log(
-            'Hubo un error en el servicio que detecta documento en AWS'
+            'Hubo un error en el servicio que detecta documento en AWS',
+            err
           );
         }
       )
