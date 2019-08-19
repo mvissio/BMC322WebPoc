@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
+
   getRenaperPerson(numberTxt, genderTxt, orderTxt) {
     const body = {
       number: numberTxt,
@@ -65,5 +67,16 @@ export class CommonsService {
         body
       )
       .pipe(map((resp: any) => resp.data));
+  }
+
+  convertBase64ToFile(image) {
+    const body = {
+      img: image
+    };
+    return this.http
+      .post(
+        `https://desolate-fortress-69862.herokuapp.com/transformImage`,
+        body
+      );
   }
 }
