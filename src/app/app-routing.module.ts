@@ -7,7 +7,7 @@ import { FaceApiComponent } from './pages/face-api/face-api.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dni', pathMatch: 'full' },
-  /* { path: '**', pathMatch: 'full', redirectTo: 'result' },*/
+  { path: '**', pathMatch: 'full', redirectTo: 'dni' },
   {
     path: 'dni',
     component: DniComponent
