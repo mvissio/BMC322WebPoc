@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable, timer} from 'rxjs';
-import {Router} from '@angular/router';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Observable, timer, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 declare const faceapi: any;
 export const URI = '../../assets/models';
@@ -14,6 +14,8 @@ export class FaceApiComponent implements OnInit {
   video: any;
   stepSelect: any = {};
   width = 300;
+  subscribeVideoEvent: Subscription;
+  constraints = { audio: false, video: true };
   steps = {
     INIT: {
       state: 'init',
@@ -42,8 +44,7 @@ export class FaceApiComponent implements OnInit {
   };
   showDraw = false;
 
-  constructor(private router: Router) {
-  }
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.stepSelect = this.steps.INIT;
@@ -59,48 +60,55 @@ export class FaceApiComponent implements OnInit {
       faceapi.nets.faceLandmark68Net.loadFromUri(URI),
       faceapi.nets.faceRecognitionNet.loadFromUri(URI),
       faceapi.nets.faceExpressionNet.loadFromUri(URI)
-    ]).then(dta => {
-      console.log('facepi dta=', dta);
-      this.startVideo();
-    }).then(() => {
-      this.video.addEventListener('play', () => {
-        console.log('faceapi video addeventlistener video=', this.video);
-        const canvas = faceapi.createCanvasFromMedia(this.video);
-        console.log('faceapi video addeventlistener canvas=', canvas);
-        canvas.style.position = 'absolute';
-        document.getElementById('canv-content').append(canvas);
-        const displaySize = {
-          width: this.video.width,
-          height: this.video.height
-        };
-        faceapi.matchDimensions(canvas, displaySize);
-        setInterval(async () => {
-          const detections = await faceapi
-            .detectSingleFace(this.video, new faceapi.TinyFaceDetectorOptions())
-            .withFaceLandmarks()
-            .withFaceExpressions();
-          if (detections) {
-            const resizedDetections = faceapi.resizeResults(
-              detections,
-              displaySize
-            );
-            canvas
-              .getContext('2d')
-              .clearRect(0, 0, canvas.width, canvas.height);
-            if (this.showDraw) {
-              faceapi.draw.drawDetections(canvas, resizedDetections);
-              faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
-              faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+    ])
+
+      .then(() => {
+        this.video.addEventListener('play', () => {
+          console.log('faceapi video addeventlistener video=', this.video);
+          const canvas = faceapi.createCanvasFromMedia(this.video);
+          console.log('faceapi video addeventlistener canvas=', canvas);
+          canvas.style.position = 'absolute';
+          document.getElementById('canv-content').append(canvas);
+          const displaySize = {
+            width: this.video.width,
+            height: this.video.height
+          };
+          faceapi.matchDimensions(canvas, displaySize);
+          setInterval(async () => {
+            const detections = await faceapi
+              .detectSingleFace(
+                this.video,
+                new faceapi.TinyFaceDetectorOptions()
+              )
+              .withFaceLandmarks()
+              .withFaceExpressions();
+            if (detections) {
+              const resizedDetections = faceapi.resizeResults(
+                detections,
+                displaySize
+              );
+              canvas
+                .getContext('2d')
+                .clearRect(0, 0, canvas.width, canvas.height);
+              if (this.showDraw) {
+                faceapi.draw.drawDetections(canvas, resizedDetections);
+                faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
+                faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
+              }
+              if (this.stepSelect.state === this.steps.INIT.state) {
+                this.stepSelect = this.steps.HAPPY;
+              } else {
+                this.moreExpresion(resizedDetections);
+              }
             }
-            if (this.stepSelect.state === this.steps.INIT.state) {
-              this.stepSelect = this.steps.HAPPY;
-            } else {
-              this.moreExpresion(resizedDetections);
-            }
-          }
-        }, 500);
-      });
-    }).catch(e => console.log('error=', e));
+          }, 500);
+        });
+      })
+      .then(dta => {
+        console.log('facepi dta=', dta);
+        this.startVideo();
+      })
+      .catch(e => console.log('error=', e));
   }
 
   moreExpresion(resizedDetections) {
@@ -152,11 +160,24 @@ export class FaceApiComponent implements OnInit {
     }
   }
 
+  successCallback(stream) {
+    const vv = document.querySelector('video');
+    vv.srcObject = stream;
+  }
+
+  errorCallback(error) {
+    console.log('navigator.getUserMedia error: ', error);
+  }
+
   startVideo() {
-    navigator.getUserMedia(
+    navigator.mediaDevices
+      .getUserMedia(this.constraints)
+      .then(this.successCallback)
+      .catch(this.errorCallback);
+    /*navigator.getUserMedia(
       {video: {}},
       stream => (this.video.srcObject = stream),
       err => console.error(err)
-    );
+    );*/
   }
 }
