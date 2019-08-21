@@ -4,12 +4,11 @@ import { Observable, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonsService } from 'src/app/services/commons.service';
-// import * as base64Img from 'base64-img';
 
 @Component({
   selector: 'app-selfie',
   templateUrl: './selfie.component.html',
-  styleUrls: ['./selfie.component.css']
+  styleUrls: ['./selfie.component.scss']
 })
 export class SelfieComponent implements OnInit {
   public showWebcam = true;

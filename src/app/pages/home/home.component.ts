@@ -8,7 +8,7 @@ const dbr = (window as any).dbr;
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
   title = 'dbr-cdn-angular-default';

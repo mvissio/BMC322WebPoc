@@ -8,7 +8,7 @@ export const URI = '../../assets/models';
 @Component({
   selector: 'app-face-api',
   templateUrl: './face-api.component.html',
-  styleUrls: ['./face-api.component.css']
+  styleUrls: ['./face-api.component.scss']
 })
 export class FaceApiComponent implements OnInit {
   video: any;

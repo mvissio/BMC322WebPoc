@@ -1,0 +1,81 @@
+@import '../../../assets/fonts/fonts.css';
+.content {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.tocapture {
+  display: flex;
+  flex-direction: column;
+}
+#result-image-wrapper {
+  margin-top: 10%;
+  /*position: relative;*/
+  display: block;
+  height: 30%;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.capturedImg {
+  width: 25%;
+}
+.lower-panel {
+  bottom: 0;
+  padding-bottom: 33px;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+}
+#info {
+  position: absolute;
+}
+
+.bottom-15 {
+  position: fixed;
+  bottom: 13%;
+  width: 100%;
+  text-align: center;
+}
+.actionBtn {
+  position: fixed;
+  bottom: 40%;
+  left: 45%;
+  font-size: xx-large;
+}
+.button {
+  background-color: #ff9204;
+  border: 2px solid #ff9204;
+  border-radius: 999px;
+  color: #ffffff;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  max-width: 320px;
+  width: 90%;
+  padding: 12px 0;
+  cursor: pointer;
+  &:disabled {
+    background-color: #d1d1d1;
+  }
+  &:hover {
+    background-color: #ff710f;
+  }
+  &:focus {
+    background-color: #e88300;
+  }
+}
+
+.checked {
+  background: url('/assets/img/icon-check.png') no-repeat center bottom;
+  box-sizing: content-box;
+  height: 100%;
+  bottom: 20%;
+  position: absolute;
+  width: 100%;
+}
+.title {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+}

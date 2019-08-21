@@ -5,14 +5,12 @@ import { PersonRenaper, ResponseRenaper } from '../../inteface/model.inteface';
 @Component({
   selector: 'app-result',
   templateUrl: './result.component.html',
-  styleUrls: ['./result.component.css']
+  styleUrls: ['./result.component.scss']
 })
 export class ResultComponent implements OnInit {
   content: ResponseRenaper;
   person: PersonRenaper;
   contentFace;
-  typeOfString: boolean;
-  typeOfStringFace: boolean;
   selfieSRC;
   imgDNISRC;
   imgDNIDorsoSRC;
